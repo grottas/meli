@@ -1,0 +1,61 @@
+<?page title="Index.zul"?>
+
+<!-- INSPINA http://webapplayers.com/inspinia_admin-v2.7/index.html -->
+
+<?link rel="stylesheet" type="text/css" href="/assets/bootstrap-3.3.7/css/bootstrap.min.css" ?>
+<?link rel="stylesheet" type="text/css" href="/assets/font-awesome-4.7.0/css/font-awesome.min.css" ?>
+<?link rel="stylesheet" type="text/css" href="/assets/inspinia-2.7.1/css/animate.css" ?>
+<?link rel="stylesheet" type="text/css" href="/assets/inspinia-2.7.1/css/style.css" ?>
+<?link rel="stylesheet" type="text/css" href="/assets/zk-ui/navbar.css" ?>
+
+
+
+<zk xmlns:n="xhtml">
+<!-- Mainly scripts -->
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="/assets/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/assets/inspinia-2.7.1/js/jquery.metisMenu.js"></script>
+<script type="text/javascript" src="/assets/inspinia-2.7.1/js/jquery.slimscroll.min.js"></script>
+ <!-- Custom and plugin javascript -->
+<script type="text/javascript" src="/assets/inspinia-2.7.1/js/inspinia.js"></script>
+<script type="text/javascript" src="/assets/inspinia-2.7.1/js/pace.min.js"></script>
+
+	<div id="wrapper">
+	<include src="/ui/menu.zul"/>
+		
+		
+        <n:div id="page-wrapper" class="gray-bg">
+        	<div class="row border-bottom"></div>
+        	<div class="row wrapper border-bottom white-bg page-heading"></div>
+        	<div class="wrapper wrapper-content">
+        		<div class="middle-box text-center animated fadeInRightBig">
+                    <label class="font-bold">This is page content</label>
+                    <div class="error-desc">
+                        You can create here any grid layout you want. And any variation layout you imagine:) Check out
+                        main dashboard and other site. It use many different layout.
+                        <a href="http://webapplayers.com/inspinia_admin-v2.7/index.html" class="btn btn-primary m-t">Inspinia</a>
+                    </div>
+                </div>
+            </div>  
+            <div class="footer">				
+                <div class="pull-right">
+                	<label value="Versión ${desktop.webApp.version}"/>
+                </div>
+                <div>
+                    <label>ZK</label> 08 Mayo, 2017
+                </div>
+            </div>  
+        </n:div>
+        
+	</div>
+</zk>
+
+<!-- 
+
+	https://developers.mercadolibre.com.ve/apps/home
+	Usuario: CIACAPPLICATIONS
+	Clave: 12345678*
+	APP_ID: 8051032385985753
+	Secret_Key: Xng378w5qAUwMO9G5S4ksECgPkQl1oYy
+
+ -->
