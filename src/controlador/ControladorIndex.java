@@ -8,6 +8,7 @@ import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zul.Label;
 
 import plugin.Meli;
+import plugin.MeliUtils;
 
 public class ControladorIndex extends SelectorComposer<Component> {
 	
@@ -20,7 +21,7 @@ public class ControladorIndex extends SelectorComposer<Component> {
 	@Listen("onClick = #meli")
 	public void mostrarGridEstudiantes() {
 		// Hacemos la 1ra conexion con MLV para que nos regresen el token
-		Meli m = new Meli("8051032385985753", "Xng378w5qAUwMO9G5S4ksECgPkQl1oYy");
+		Meli m = new Meli(MeliUtils.APP_ID, MeliUtils.Secret_Key);
 		
 		String redirectUrl = m.getAuthUrl(scheme.getValue()+"://"+
 										  nombrePuerto.getValue()+":"+

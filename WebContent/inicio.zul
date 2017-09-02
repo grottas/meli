@@ -18,7 +18,7 @@
 <?script type="text/javascript" src="/assets/inspinia-2.7.1/js/pace.min.js"?>
 
 <zk xmlns:n="xhtml">
-	<div id="wrapper">
+	<div id="wrapper" apply="controlador.ControladorInicio">
 	<include src="/ui/menu.zul"/>
 		
 		
@@ -44,7 +44,7 @@
                 </div>
             </div>  
         </n:div>
-        
+        <label value="${desktop.execution.desktop.queryString}" id="code" visible="false"/>
 	</div>
 </zk>
 
