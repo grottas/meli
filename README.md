@@ -13,3 +13,12 @@
   - Get accessToken
 #### September 2, 2017
   - MeliUtils
+  - ZkUtils
+#### September 3, 2017
+  - Generate users test
+  - Get Questions by seller
+  - Models question, answer and userCurrent
+  - Dymanic menu
+  - Mapear Jsons
+  - Control sesion statement
+  - Imprimir lista de preguntas

@@ -27,12 +27,24 @@
         	<div class="row wrapper border-bottom white-bg page-heading"></div>
         	<div class="wrapper wrapper-content">
         		<div class="middle-box text-center animated fadeInRightBig">
-                    <label class="font-bold">This is page content</label>
-                    <div class="error-desc">
-                        You can create here any grid layout you want. And any variation layout you imagine:) Check out
-                        main dashboard and other site. It use many different layout.
-                        <a href="http://webapplayers.com/inspinia_admin-v2.7/index.html" class="btn btn-primary m-t">Inspinia</a>
-                    </div>
+
+					<listbox id="listQuestions" mold="paging" pageSize="25"  pagingPosition="top">
+						<listhead menupopup="auto">
+							<listheader label="Item" align="center"/>
+							<listheader label="Pregunta" align="center" />
+							<listheader label="Estatus" align="center"/>
+							<listheader label="Respuesta" align="center"/>
+						</listhead>
+						<template name="model">
+							<listitem>
+								<listcell><label value="${each.item_id}"></label> </listcell>
+								<listcell><label value="${each.text}"></label> </listcell>
+								<listcell><label value="${each.status}"></label> </listcell>
+								<listcell><label value="${each.answer != null ? each.answer.text : ''}"></label></listcell>
+							</listitem>	
+						</template>
+					</listbox>                    
+
                 </div>
             </div>  
             <div class="footer">				
@@ -57,5 +69,9 @@
 	Clave: 12345678*
 	APP_ID: 8051032385985753
 	Secret_Key: Xng378w5qAUwMO9G5S4ksECgPkQl1oYy
+	
+	Users Test
+	{"id": 271578834,"nickname": "TETE6487554","password": "qatest3247","site_status": "active","email": "test_user_8971533@testuser.com"}
+	{"id": 271580958,"nickname": "TETE7185041","password": "qatest9478","site_status": "active","email": "test_user_40863404@testuser.com"}
 
  -->

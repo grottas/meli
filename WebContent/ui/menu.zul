@@ -3,63 +3,9 @@
 		<div class="sidebar-collapse">
 		
 			<n:ul class="nav metismenu" id="metismenu">
-				<n:li class="second-label">
-					<n:a>
-						<!--  <div class="second-label">-->
-							<n:i class="fa fa-th-large"></n:i>
-							<n:span class="nav-label">Dasboard</n:span>
-							<n:span class="fa arrow"></n:span>
-						<!--  </div> -->
-					</n:a>
-					<n:ul class="nav nav-second-level collapse">
-						<n:li>
-							<n:a href="#">Inicio</n:a>
-						</n:li>
-						<n:li>
-							<n:a href="#">Inicio 2</n:a>
-						</n:li>
-					</n:ul>
-				</n:li>
-				<n:li class="first-label">
-					<n:a href="#">
-						<!--<div class="first-label">-->
-							<n:i class="fa fa-th-large"></n:i>
-							<n:span class="nav-label">Dasboard 2</n:span>
-						<!--</div>-->
-					</n:a>
-				</n:li>
-				<n:li class="second-label">
-					<n:a>
-						<!--  <div class="second-label">-->
-							<n:i class="fa fa-th-large"></n:i>
-							<n:span class="nav-label">Salir</n:span>
-							<n:span class="fa arrow"></n:span>
-						<!--</div>-->
-					</n:a>
-					<n:ul class="nav nav-second-level collapse">
-						<n:li>
-							<n:a href="#">Inicio</n:a>
-						</n:li>
-						<n:li>
-							<n:a href="#">Inicio 2</n:a>
-						</n:li>
-					</n:ul>
-				</n:li>
+				
 			</n:ul>
-			<!-- 
-			<navbar orient="vertical" class="nav metismenu" collapsed="false">
-				<navitem id="DatosPersonales" label="Perfil" iconSclass="fa fa-home"/>
-				<nav label="Datos Productos" iconSclass="fa fa-refresh">
-				  	<navitem id="gridProductos" label="Consultar Productos"/>
-				</nav>
-				<nav label="Ayuda" iconSclass="fa fa-bed">
-					<navitem id="ayudaGenerales" label="Ayudas Generales"/>
-				</nav>
-				<navitem id="acercaDe" label="Acerca de.." iconSclass="fa fa-eye"/>
-				<navitem id="vistaAdmin" label="Vista Admin" image="/imagen/vistaConf.png"
-							 if="${sessionScope.credenciales eq 'ADMIN'}"/>
-			</navbar>
-			-->
+			
 		</div>
 	</n:nav>
 </zk>

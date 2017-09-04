@@ -1,0 +1,15 @@
+<zk xmlns:n="xhtml">
+	<n:li id="${arg.execution}" class="${arg.level}">
+		<n:a>
+			<n:i class="${arg.icon}"></n:i>
+			<n:span class="nav-label">${arg.name}</n:span>
+			<n:span class="fa arrow" visible="${arg.child != null}"></n:span>
+		</n:a>
+		<n:ul class="nav nav-second-level collapse" visible="${arg.child != null}">
+			<n:li forEach="${arg.child}">
+				<n:a href="#">${each}</n:a>
+			</n:li>
+		</n:ul>
+	</n:li>
+</zk>
+
