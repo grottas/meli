@@ -28,10 +28,10 @@ public class MenuControlador extends SelectorComposer<Component> {
 	@Override
 	public void doAfterCompose(Component comp) throws Exception {
 		super.doAfterCompose(comp);
-		
+
 		List<Menu> menu = new ArrayList<Menu>();
-		menu.add(new Menu("/inicio.zul", 0, "fa fa-list-ul", "Meli", null ));
-		menu.add(new Menu("/", 0, "fa fa-sign-out", "Cerrar Sesión", null));
+		menu.add(new Menu("inicio.zul", 0, "fa fa-list-ul", "Meli", null ));
+		menu.add(new Menu("", 0, "fa fa-sign-out", "Cerrar Sesión", null));
 		
 		createmenu(menu);
 	}
@@ -58,7 +58,7 @@ public class MenuControlador extends SelectorComposer<Component> {
 			if (li.getSclass() == null) {
 				return;
 	      	}
-		
+
 			setLi(li);
 			if (liOld != null && liOld != li && liOld.getSclass().contains("active")) {
 				setLi(liOld);
@@ -85,11 +85,10 @@ public class MenuControlador extends SelectorComposer<Component> {
 	}
 
 	private void redireccionamiento(Li li) {
-		if (li.getId().equals("/")) {
+		if (li.getId().equals("")) {
 			sesion.cerrarSesion();
 		}
-		ZkUtils.redireccion(li.getId());
+		ZkUtils.redireccion("/" + li.getId());
 	}
 	
-
 }

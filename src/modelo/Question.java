@@ -1,7 +1,22 @@
 package modelo;
 
-public class Question {
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
+public class Question {
+	
+	public static final Map<String, String> STATUS = createMap();
+
+    private static Map<String, String> createMap() {
+        Map<String, String> result = new HashMap<String, String>();
+        result.put("UNANSWERED", "Sin Responder");
+        result.put("ANSWERED", "Respondida");
+        result.put("CLOSED_UNANSWERED", "Sin Responder, Artículo Cerrado");
+        result.put("UNDER_REVIEW", "Bajo Revisión");
+        return Collections.unmodifiableMap(result);
+    }
+	
 	// Question Id.
 	private String id;
 	

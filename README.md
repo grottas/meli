@@ -22,3 +22,7 @@
   - Mapear Jsons
   - Control sesion statement
   - Imprimir lista de preguntas
+#### September 4, 2017
+  - Bug reading json answer
+  - Bug en la conexion con meli
+  - Date Format

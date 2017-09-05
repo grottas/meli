@@ -26,21 +26,28 @@
         	<div class="row border-bottom"></div>
         	<div class="row wrapper border-bottom white-bg page-heading"></div>
         	<div class="wrapper wrapper-content">
-        		<div class="middle-box text-center animated fadeInRightBig">
+        		<div class="text-center animated fadeInRightBig">
 
 					<listbox id="listQuestions" mold="paging" pageSize="25"  pagingPosition="top">
 						<listhead menupopup="auto">
+							<listheader label="Fecha" align="center"/>
 							<listheader label="Item" align="center"/>
+							<listheader label="Cliente" align="center" />
 							<listheader label="Pregunta" align="center" />
 							<listheader label="Estatus" align="center"/>
 							<listheader label="Respuesta" align="center"/>
 						</listhead>
 						<template name="model">
 							<listitem>
+								<listcell><label value="${each.date_created}"></label> </listcell>
 								<listcell><label value="${each.item_id}"></label> </listcell>
+								<listcell><label value="${each.seller_id}"></label> </listcell>
 								<listcell><label value="${each.text}"></label> </listcell>
 								<listcell><label value="${each.status}"></label> </listcell>
-								<listcell><label value="${each.answer != null ? each.answer.text : ''}"></label></listcell>
+								<listcell>
+									<label value="${each.answer.text}"></label>
+									<label value="${each.answer.status}"></label>
+								</listcell>
 							</listitem>	
 						</template>
 					</listbox>                    

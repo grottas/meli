@@ -9,6 +9,7 @@ import org.zkoss.zul.Label;
 
 import plugin.Meli;
 import plugin.MeliUtils;
+import utils.ZkUtils;
 
 public class ControladorIndex extends SelectorComposer<Component> {
 	
@@ -20,16 +21,10 @@ public class ControladorIndex extends SelectorComposer<Component> {
 	
 	@Listen("onClick = #meli")
 	public void mostrarGridEstudiantes() {
-		// Hacemos la 1ra conexion con MLV para que nos regresen el token
 		Meli m = new Meli(MeliUtils.APP_ID, MeliUtils.Secret_Key);
 		
-		String redirectUrl = m.getAuthUrl(scheme.getValue()+"://"+
-										  nombrePuerto.getValue()+":"+
-										  puerto.getValue()+
-										  nombreProyecto.getValue()+
-										  "/inicio.zul", Meli.AuthUrls.MLV);
-		Executions.sendRedirect(redirectUrl);
-
+		String redirectUrl = m.getAuthUrl(MeliUtils.Auth_Redirect_Url, Meli.AuthUrls.MLV);
+		ZkUtils.redireccion(redirectUrl);
 	}
 	
 }

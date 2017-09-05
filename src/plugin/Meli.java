@@ -5,6 +5,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.concurrent.ExecutionException;
 
+import utils.ZkUtils;
+
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -151,7 +153,8 @@ public class Meli {
 			try {
 				response = r.execute().get();
 			} catch (Exception e) {
-				throw new MeliException(e);
+				ZkUtils.mensaje(e.toString(), 3, null);
+//				throw new MeliException(e);
 			}
 		}
 		return response;
@@ -208,11 +211,14 @@ public class Meli {
 			response = r.execute().get();
 			responseBody = response.getResponseBody();
 		} catch (InterruptedException e) {
-			throw new AuthorizationFailure(e);
+			ZkUtils.mensaje(e.toString(), 3, null);
+//			throw new AuthorizationFailure(e);
 		} catch (ExecutionException e) {
-			throw new AuthorizationFailure(e);
+			ZkUtils.mensaje(e.toString(), 3, null);
+//			throw new AuthorizationFailure(e);
 		} catch (IOException e) {
-			throw new AuthorizationFailure(e);
+			ZkUtils.mensaje(e.toString(), 3, null);
+//			throw new AuthorizationFailure(e);
 		}
 
 		JsonParser p = new JsonParser();
@@ -221,6 +227,7 @@ public class Meli {
 		try {
 			object = p.parse(responseBody).getAsJsonObject();
 		} catch (JsonSyntaxException e) {
+			ZkUtils.mensaje(responseBody, 3, null);
 			throw new AuthorizationFailure(responseBody);
 		}
 
@@ -231,7 +238,8 @@ public class Meli {
 			this.refreshToken = jsonElement != null ? object.get(
 					"refresh_token").getAsString() : null;
 		} else {
-			throw new AuthorizationFailure(object.get("message").getAsString());
+			ZkUtils.mensaje(object.get("message").getAsString(), 3, null);
+//			throw new AuthorizationFailure(object.get("message").getAsString());
 		}
 
 	}
@@ -248,6 +256,7 @@ public class Meli {
 		try {
 			response = r.execute().get();
 		} catch (Exception e) {
+			ZkUtils.mensaje(e.toString(), 3, null);
 			throw new MeliException(e);
 		}
 		if (params.containsKey("access_token") && this.hasRefreshToken()
@@ -263,7 +272,8 @@ public class Meli {
 			try {
 				response = r.execute().get();
 			} catch (Exception e) {
-				throw new MeliException(e);
+				ZkUtils.mensaje(e.toString(), 3, null);
+//				throw new MeliException(e);
 			}
 		}
 		return response;
@@ -277,6 +287,7 @@ public class Meli {
 		try {
 			response = r.execute().get();
 		} catch (Exception e) {
+			ZkUtils.mensaje(e.toString(), 3, null);
 			throw new MeliException(e);
 		}
 		if (params.containsKey("access_token") && this.hasRefreshToken()
@@ -292,7 +303,8 @@ public class Meli {
 			try {
 				response = r.execute().get();
 			} catch (Exception e) {
-				throw new MeliException(e);
+				ZkUtils.mensaje(e.toString(), 3, null);
+//				throw new MeliException(e);
 			}
 		}
 		return response;
@@ -321,7 +333,8 @@ public class Meli {
 			try {
 				response = r.execute().get();
 			} catch (Exception e) {
-				throw new MeliException(e);
+				ZkUtils.mensaje(e.toString(), 3, null);
+//				throw new MeliException(e);
 			}
 		}
 		return response;

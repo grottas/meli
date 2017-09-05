@@ -7,8 +7,11 @@ import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.select.Selectors;
 import org.zkoss.zk.ui.util.Clients;
 
+import plugin.Meli;
+import plugin.MeliUtils;
+
 public final class ZkUtils {
-	
+			
 	public static void redireccion(String url) {
 		Executions.sendRedirect(url);
 	}
@@ -37,6 +40,18 @@ public final class ZkUtils {
 		for (int i = componentes.size() - 1; i >= 0; i--) {
 			componente.removeChild(componentes.get(i));
 		}
+	}
+	
+	public static void problemasInternet() {
+		alerta("Se recargará de nuevo la pagina", "Oops! Algo anda mal :(");
+		
+		Meli m = new Meli(MeliUtils.APP_ID, MeliUtils.Secret_Key);
+		String redirectUrl = m.getAuthUrl(MeliUtils.Auth_Redirect_Url, Meli.AuthUrls.MLV);
+		redireccion(redirectUrl);
+	}
+	
+	public static String dateFormat(String date) {
+		return date.substring(8, 10) + "/" + date.substring(5, 7) + "/" + date.substring(0, 4) + " " + date.substring(11, date.indexOf("."));
 	}
 	
 }

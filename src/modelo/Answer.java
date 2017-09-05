@@ -1,6 +1,19 @@
 package modelo;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 public class Answer {
+	
+	public static final Map<String, String> STATUS = createMap();
+
+    private static Map<String, String> createMap() {
+        Map<String, String> result = new HashMap<String, String>();
+        result.put("ACTIVE", "Activo");
+        result.put("DISABLED", "Desabilitado");
+        return Collections.unmodifiableMap(result);
+    }
 	
 	// Text of the answer.
 	private String text;
