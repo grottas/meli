@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import modelo.Answer;
+import modelo.From;
+import modelo.Producto;
 import modelo.Question;
 import modelo.UserCurrent;
 
@@ -15,6 +17,33 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 public final class ParseJson {
+	
+	public static Producto item(String json) throws IOException {
+		System.out.println(json);
+			
+		JsonElement obj = stringToJsonElement(json);
+		
+		String precio = (buscarJson(obj, "price").equals("null")) 
+		          		? "0" : buscarJson(obj, "price");
+		String condicion = (buscarJson(obj, "condition").equals("null")) 
+				           ? "Sin definir": buscarJson(obj, "condition");
+		
+		return new Producto(buscarJson(obj, "title"), 
+							buscarJson(obj, "thumbnail"), 
+							 condicion, 
+							 Double.parseDouble(precio), 
+							 Producto.CURRENCY.get(buscarJson(obj, "currency_id")),
+							 buscarJson(obj, "currency_id"),
+							 Integer.parseInt(buscarJson(obj, "sold_quantity")),
+							 Integer.parseInt(buscarJson(obj, "available_quantity")));
+	}
+	
+	public static String username(String json) throws IOException {
+		System.out.println(json);
+			
+		JsonElement obj = stringToJsonElement(json);
+		return buscarJson(obj, "nickname");				
+	}
 	
 	public static List<Question> questions(String json) {
 		System.out.println(json);		
@@ -33,13 +62,23 @@ public final class ParseJson {
 									Answer.STATUS.get( buscarJson(answerJ, "status") ), 
 									ZkUtils.dateFormat( buscarJson(question, "date_created") ));
 			}
+			
+			JsonObject fromObj = question.getAsJsonObject();
+			JsonElement fromJ = fromObj.get("from");
+			
+			From from = new From(buscarJson(fromJ, "id"), 
+								Integer.valueOf( buscarJson(fromJ, "answered_questions") ));
+			
 			list.add(new Question(buscarJson(question, "id"), 
-									answer, 
-									ZkUtils.dateFormat( buscarJson(question, "date_created") ), 
-									buscarJson(question, "item_id"), 
-									buscarJson(question, "seller_id"), 
-									Question.STATUS.get( buscarJson(question, "status") ), 
-									buscarJson(question, "text")));
+								  answer, 
+								  ZkUtils.dateFormat( buscarJson(question, "date_created") ), 
+								  buscarJson(question, "item_id"), 
+								  buscarJson(question, "seller_id"), 
+								  Question.STATUS.get( buscarJson(question, "status") ), 
+								  buscarJson(question, "text"),
+								  Boolean.valueOf( buscarJson(question, "deleted_from_listing") ),
+								  Boolean.valueOf( buscarJson(question, "hold") ),
+								  from));
 		}
 		return list;
 	}

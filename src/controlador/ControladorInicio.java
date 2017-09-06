@@ -1,8 +1,11 @@
 package controlador;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import modelo.Producto;
 import modelo.Question;
 import modelo.UserCurrent;
 
@@ -29,10 +32,11 @@ public class ControladorInicio extends SelectorComposer<Component> {
 	@Wire private Label code;
 	@Wire private Listbox listQuestions;
 	
-	private Meli m = new Meli(MeliUtils.APP_ID, MeliUtils.Secret_Key);
+	private static Meli m = new Meli(MeliUtils.APP_ID, MeliUtils.Secret_Key);
 	private FluentStringsMap params = new FluentStringsMap();
-
 	private Sesion sesion = new Sesion();
+	private static Map<String, String> nicknames = new HashMap<String, String>();
+	private static Map<String, Producto> products = new HashMap<String, Producto>();
 	
 	@Override
 	 public void doAfterCompose(Component comp) throws Exception {
@@ -62,7 +66,8 @@ public class ControladorInicio extends SelectorComposer<Component> {
 
 	private void createListQuestions() throws MeliException, IOException {
 		params.add("seller_id", String.valueOf( sesion.sesion.getAttribute("id") ));
-		Response response = m.get("/questions/search?", params);		
+		Response response = m.get("/questions/search?", params);	
+		System.out.println(response.getResponseBody());
 		if (response.getStatusCode() == 200) {
 			List<Question> questions = ParseJson.questions(response.getResponseBody());
 			
@@ -74,5 +79,43 @@ public class ControladorInicio extends SelectorComposer<Component> {
 			return;
 		}
 	}
-
+	
+	public static String getBuscarClientePorId(String id) throws MeliException, IOException {
+		if (nicknames.containsKey(id)) {
+			return nicknames.get(id);
+		} else {
+			Response response = m.get("/users/" + id);		
+			if (response.getStatusCode() == 200) {
+				
+				String nick = ParseJson.username(response.getResponseBody());
+				nicknames.put(id, nick);
+				return nick;
+			} else {
+				return "";
+			}
+		}		
+	}
+	
+	public static String getBuscarProductoPorId(String id, String retorno) throws MeliException, IOException {
+		Producto producto = null;
+		if (products.containsKey(id)) {
+			producto = products.get(id);
+		} else {
+			Response response = m.get("/items/" + id);		
+			if (response.getStatusCode() == 200) {
+				
+				producto = ParseJson.item(response.getResponseBody());
+				products.put(id, producto);
+			} else {
+				return null;
+			}
+		}		
+		
+		switch (retorno) {
+			case "nombre": return producto.getNombre();
+			case "imagen": return producto.getImagen();
+			default: return null;
+		}
+	}
+ 
 }

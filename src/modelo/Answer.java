@@ -7,7 +7,6 @@ import java.util.Map;
 public class Answer {
 	
 	public static final Map<String, String> STATUS = createMap();
-
     private static Map<String, String> createMap() {
         Map<String, String> result = new HashMap<String, String>();
         result.put("ACTIVE", "Activo");

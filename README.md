@@ -26,3 +26,8 @@
   - Bug reading json answer
   - Bug en la conexion con meli
   - Date Format
+#### September 5, 2017 
+  - Consultar nombre del cliente
+  - Consultar datos del producto
+  - Mapear Json de las consultas
+  - Mostrar imagen producto 

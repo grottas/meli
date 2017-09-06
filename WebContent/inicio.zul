@@ -24,7 +24,11 @@
 		
         <n:div id="page-wrapper" class="gray-bg">
         	<div class="row border-bottom"></div>
-        	<div class="row wrapper border-bottom white-bg page-heading"></div>
+        	<div class="row wrapper border-bottom white-bg page-heading">
+        		<div class="col-lg-10">
+        			<n:h2>Gestión de Preguntas y Respuestas</n:h2>
+        		</div>
+        	</div>
         	<div class="wrapper wrapper-content">
         		<div class="text-center animated fadeInRightBig">
 
@@ -40,8 +44,11 @@
 						<template name="model">
 							<listitem>
 								<listcell><label value="${each.date_created}"></label> </listcell>
-								<listcell><label value="${each.item_id}"></label> </listcell>
-								<listcell><label value="${each.seller_id}"></label> </listcell>
+								<listcell>
+											<image src="${ $composer.getBuscarProductoPorId(each.item_id, 'imagen') }" /> 
+											<label value="${ $composer.getBuscarProductoPorId(each.item_id, 'nombre') }"></label> 
+								</listcell>
+								<listcell><label value="${ $composer.getBuscarClientePorId(each.from.id) }"></label> </listcell>
 								<listcell><label value="${each.text}"></label> </listcell>
 								<listcell><label value="${each.status}"></label> </listcell>
 								<listcell>

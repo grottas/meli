@@ -41,8 +41,15 @@ public class Question {
 	// Text of the question.
 	private String text;
 	
+	private boolean deleted_from_listing;
+	
+	private boolean hold;
+	
+	private From from;
+	
 	public Question(String id, Answer answer, String date_created,
-			String item_id, String seller_id, String status, String text) {
+			String item_id, String seller_id, String status, String text,
+			boolean deleted_from_listing, boolean hold, From from) {
 		super();
 		this.id = id;
 		this.answer = answer;
@@ -51,6 +58,33 @@ public class Question {
 		this.seller_id = seller_id;
 		this.status = status;
 		this.text = text;
+		this.deleted_from_listing = deleted_from_listing;
+		this.hold = hold;
+		this.from = from;
+	}
+
+	public boolean isDeleted_from_listing() {
+		return deleted_from_listing;
+	}
+
+	public void setDeleted_from_listing(boolean deleted_from_listing) {
+		this.deleted_from_listing = deleted_from_listing;
+	}
+
+	public boolean isHold() {
+		return hold;
+	}
+
+	public void setHold(boolean hold) {
+		this.hold = hold;
+	}
+
+	public From getFrom() {
+		return from;
+	}
+
+	public void setFrom(From from) {
+		this.from = from;
 	}
 
 	public String getId() {
