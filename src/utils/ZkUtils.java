@@ -1,5 +1,6 @@
 package utils;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 import org.zkoss.zk.ui.Component;
@@ -7,10 +8,9 @@ import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.select.Selectors;
 import org.zkoss.zk.ui.util.Clients;
 
-import plugin.Meli;
-import plugin.MeliUtils;
-
 public final class ZkUtils {
+	
+	private static DecimalFormat df = new DecimalFormat("###,###,###,###.00");
 			
 	public static void redireccion(String url) {
 		Executions.sendRedirect(url);
@@ -57,5 +57,9 @@ public final class ZkUtils {
 	public static String dateFormat(String date) {
 		return date.substring(8, 10) + "/" + date.substring(5, 7) + "/" + date.substring(0, 4) + " " + date.substring(11, date.indexOf("."));
 	}
+	
+	public static String priceFormat(double numero) {
+        return df.format(numero);
+    }
 	
 }

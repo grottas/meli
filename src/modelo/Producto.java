@@ -22,9 +22,11 @@ public class Producto {
 	private String id_moneda;
 	private int vendido;
 	private int disponible;
+	private String permalink;
 
 	public  Producto(String nombre, String imagen, String condicion, 
-			double precio, String moneda, String id_moneda, int vendido, int disponible) {
+			double precio, String moneda, String id_moneda, int vendido, int disponible,
+			String permalink) {
 		this.nombre = nombre;
 		this.imagen = imagen;
 		this.condicion = condicion;
@@ -33,9 +35,18 @@ public class Producto {
 		this.id_moneda = id_moneda;
 		this.vendido = vendido;
 		this.disponible = disponible;
+		this.permalink = permalink;
 	}
 	
 	public Producto(){}
+	
+	public String getPermalink() {
+		return permalink;
+	}
+
+	public void setPermalink(String permalink) {
+		this.permalink = permalink;
+	}
 
 	public String getMoneda() {
 		return moneda;

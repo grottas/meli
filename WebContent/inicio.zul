@@ -31,30 +31,71 @@
         	</div>
         	<div class="wrapper wrapper-content">
         		<div class="text-center animated fadeInRightBig">
+        		
+        			<div class="row">
+	        			<div class="col-xs-12 col-sm-6 col-md-4" style="text-align: left;">
+	        				<n:p>Filtros</n:p>
+			        		<div class="btn-group">
+			                    <n:button class="btn btn-white" type="button">Cliente</n:button>
+			                    <n:button class="btn btn-primary" type="button">Fecha</n:button>
+			                    <n:button class="btn btn-white" type="button">Producto</n:button>
+			                </div>
+			            	<n:button class="btn btn-white" type="button"><n:i class="fa fa-refresh"></n:i></n:button>
+	                    </div>
+                    
+                    	<div class="col-xs-12 col-sm-6 col-md-4" style="text-align: left;">
+                    		<n:p>Acciones</n:p>
+                    		<div class="btn-group">
+			                    <n:button class="btn btn-white" type="button">Responder</n:button>
+			                    <n:button class="btn btn-danger" type="button">Eliminar</n:button>
+			                </div>
+                    	</div>
+                    	
+                    	<div class="col-xs-12 col-sm-12 col-md-4">
+                    		<n:p style="visibility: hidden;">Busqueda</n:p>
+                    		<div class="input-group">
+		                    	<textbox type="text" class="form-control input-sm" placeholder="Filtrar lista" />
+			                    <div class="input-group-btn">
+			                    	<n:button type="button" class="btn btn-sm btn-primary">Buscar</n:button>
+			                    </div>
+			                </div>
+                    	</div>
+                    </div>
 
-					<listbox id="listQuestions" mold="paging" pageSize="25"  pagingPosition="top">
-						<listhead menupopup="auto">
-							<listheader label="Fecha" align="center"/>
-							<listheader label="Item" align="center"/>
-							<listheader label="Cliente" align="center" />
-							<listheader label="Pregunta" align="center" />
-							<listheader label="Estatus" align="center"/>
-							<listheader label="Respuesta" align="center"/>
-						</listhead>
+					<listbox id="listQuestions" mold="paging" pageSize="10"  pagingPosition="top" 
+							emptyMessage="No hay preguntas para mostrar." multiple="true">
 						<template name="model">
 							<listitem>
-								<listcell><label value="${each.date_created}"></label> </listcell>
+							
 								<listcell>
-											<image src="${ $composer.getBuscarProductoPorId(each.item_id, 'imagen') }" /> 
-											<label value="${ $composer.getBuscarProductoPorId(each.item_id, 'nombre') }"></label> 
+									<hbox style="width: 100%;">
+											<n:a href="${ $composer.getBuscarProductoPorId(each.item_id, 'url') }" target="_blank">
+												<image src="${ $composer.getBuscarProductoPorId(each.item_id, 'imagen') }" /> 
+											</n:a>
+										<vbox style="width: 100%;">
+											<n:a href="${ $composer.getBuscarProductoPorId(each.item_id, 'url') }" target="_blank">
+												<label value="${ $composer.getBuscarProductoPorId(each.item_id, 'nombre') }"></label> 
+											</n:a>
+												
+											<hbox style="width: 100%;">
+												<n:a href="${ $composer.getBuscarClientePorId(each.from.id, 'url') }" target="_blank">
+													<label value="${ $composer.getBuscarClientePorId(each.from.id, 'nombre') }"></label>
+												</n:a>
+												-
+												<label value="${ $composer.getBuscarClientePorId(each.from.id, 'puntos') } puntos"></label>
+												<label value="${each.status}" class="${each.statusColor}" onClick="$composer.mostrarRespuesta()"></label>
+												<n:i class="fa fa-clock-o"></n:i>
+												<label value="${each.date_created}"></label>
+											</hbox>
+											
+											<label value="${each.text}" style="margin-left: 20px;"></label>
+											
+											<label value="${each.answer.text}" style="margin-left: 40px;"></label>
+											<!-- <label value="${each.answer.status}"></label> -->
+										</vbox>
+									</hbox>
 								</listcell>
-								<listcell><label value="${ $composer.getBuscarClientePorId(each.from.id) }"></label> </listcell>
-								<listcell><label value="${each.text}"></label> </listcell>
-								<listcell><label value="${each.status}"></label> </listcell>
-								<listcell>
-									<label value="${each.answer.text}"></label>
-									<label value="${each.answer.status}"></label>
-								</listcell>
+							
 							</listitem>	
 						</template>
 					</listbox>                    

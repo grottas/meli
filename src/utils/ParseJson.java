@@ -9,6 +9,7 @@ import modelo.Answer;
 import modelo.From;
 import modelo.Producto;
 import modelo.Question;
+import modelo.User;
 import modelo.UserCurrent;
 
 import com.google.gson.JsonArray;
@@ -35,14 +36,18 @@ public final class ParseJson {
 							 Producto.CURRENCY.get(buscarJson(obj, "currency_id")),
 							 buscarJson(obj, "currency_id"),
 							 Integer.parseInt(buscarJson(obj, "sold_quantity")),
-							 Integer.parseInt(buscarJson(obj, "available_quantity")));
+							 Integer.parseInt(buscarJson(obj, "available_quantity")),
+							 buscarJson(obj, "permalink"));
 	}
 	
-	public static String username(String json) throws IOException {
+	public static User user(String json) throws IOException {
 		System.out.println(json);
 			
 		JsonElement obj = stringToJsonElement(json);
-		return buscarJson(obj, "nickname");				
+		return new User(buscarJson(obj, "id"), 
+						buscarJson(obj, "nickname"),
+						buscarJson(obj, "points"), 
+						buscarJson(obj, "permalink"));		
 	}
 	
 	public static List<Question> questions(String json) {
@@ -75,6 +80,7 @@ public final class ParseJson {
 								  buscarJson(question, "item_id"), 
 								  buscarJson(question, "seller_id"), 
 								  Question.STATUS.get( buscarJson(question, "status") ), 
+								  Question.STATUS_COLOR.get( buscarJson(question, "status") ), 
 								  buscarJson(question, "text"),
 								  Boolean.valueOf( buscarJson(question, "deleted_from_listing") ),
 								  Boolean.valueOf( buscarJson(question, "hold") ),

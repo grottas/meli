@@ -16,6 +16,17 @@ public class Question {
         result.put("UNDER_REVIEW", "Bajo Revisión");
         return Collections.unmodifiableMap(result);
     }
+    
+    public static final Map<String, String> STATUS_COLOR = createColorMap();
+
+    private static Map<String, String> createColorMap() {
+        Map<String, String> result = new HashMap<String, String>();
+        result.put("UNANSWERED", "label");
+        result.put("ANSWERED", "label label-primary");
+        result.put("CLOSED_UNANSWERED", "label label-warning");
+        result.put("UNDER_REVIEW", "label label-danger");
+        return Collections.unmodifiableMap(result);
+    }
 	
 	// Question Id.
 	private String id;
@@ -38,6 +49,8 @@ public class Question {
 	//	under_review: 		The item is under review and the question too.
 	private String status;
 	
+	private String statusColor;
+	
 	// Text of the question.
 	private String text;
 	
@@ -48,8 +61,8 @@ public class Question {
 	private From from;
 	
 	public Question(String id, Answer answer, String date_created,
-			String item_id, String seller_id, String status, String text,
-			boolean deleted_from_listing, boolean hold, From from) {
+			String item_id, String seller_id, String status, String statusColor,
+			String text, boolean deleted_from_listing, boolean hold, From from) {
 		super();
 		this.id = id;
 		this.answer = answer;
@@ -57,10 +70,19 @@ public class Question {
 		this.item_id = item_id;
 		this.seller_id = seller_id;
 		this.status = status;
+		this.statusColor = statusColor;
 		this.text = text;
 		this.deleted_from_listing = deleted_from_listing;
 		this.hold = hold;
 		this.from = from;
+	}
+	
+	public String getStatusColor() {
+		return statusColor;
+	}
+
+	public void setStatusColor(String statusColor) {
+		this.statusColor = statusColor;
 	}
 
 	public boolean isDeleted_from_listing() {

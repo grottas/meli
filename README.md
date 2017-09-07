@@ -31,3 +31,5 @@
   - Consultar datos del producto
   - Mapear Json de las consultas
   - Mostrar imagen producto 
+#### September 6, 2017
+  - Maquetacion listado, filtros
