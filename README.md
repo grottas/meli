@@ -33,3 +33,9 @@
   - Mostrar imagen producto 
 #### September 6, 2017
   - Maquetacion listado, filtros
+#### September 7, 2017
+  - Estudio de propuestas de requerimiento
+  - Investigacion de json response
+  - Filtracion por json questions
+  - Optimizacion de la busqueda de questions
+  - Listado solo de preguntas sin responder

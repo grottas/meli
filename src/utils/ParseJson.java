@@ -50,6 +50,13 @@ public final class ParseJson {
 						buscarJson(obj, "permalink"));		
 	}
 	
+	public static int totalQuestions(String json) {
+		System.out.println(json);
+		
+		JsonElement obj = stringToJsonElement(json);
+		return Integer.valueOf(buscarJson(obj, "total"));	
+	}
+	
 	public static List<Question> questions(String json) {
 		System.out.println(json);		
 			

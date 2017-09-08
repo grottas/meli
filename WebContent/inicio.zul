@@ -83,15 +83,17 @@
 												</n:a>
 												-
 												<label value="${ $composer.getBuscarClientePorId(each.from.id, 'puntos') } puntos"></label>
+												<!--  
 												<label value="${each.status}" class="${each.statusColor}" onClick="$composer.mostrarRespuesta()"></label>
+												-->
 												<n:i class="fa fa-clock-o"></n:i>
 												<label value="${each.date_created}"></label>
 											</hbox>
 											
 											<label value="${each.text}" style="margin-left: 20px;"></label>
-											
+											<!-- 
 											<label value="${each.answer.text}" style="margin-left: 40px;"></label>
-											<!-- <label value="${each.answer.status}"></label> -->
+											<label value="${each.answer.status}"></label> -->
 										</vbox>
 									</hbox>
 								</listcell>

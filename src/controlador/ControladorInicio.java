@@ -1,6 +1,7 @@
 package controlador;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,52 +41,73 @@ public class ControladorInicio extends SelectorComposer<Component> {
 	private static Meli m = new Meli(MeliUtils.APP_ID, MeliUtils.Secret_Key);
 	private FluentStringsMap params = new FluentStringsMap();
 	private Sesion sesion = new Sesion();
+	
+	private int totalQuestions = 0;
+	private List<Question> questions = new ArrayList<Question>();
 	private static Map<String, User> users = new HashMap<String, User>();
 	private static Map<String, Producto> products = new HashMap<String, Producto>();
 	
-	private String tokenAux = "APP_USR-8051032385985753-090620-1183cb97ce8659af93e9b1f310176c17__A_E__-268910416";
+	private String tokenAux = "APP_USR-8051032385985753-090721-cd060af2f0b3b214dc07b0a6ec4f26e5__D_E__-268910416";
 	private String idUsuarioAux = "268910416";
 	
 	@Override
 	 public void doAfterCompose(Component comp) throws Exception, ExecutionException {
 		super.doAfterCompose(comp);
 		
-		/*
-		if (sesion.sesion.getAttribute("id") == null) {
-			System.out.println("ACTIVO CON LA SESION");
-			String cod = code.getValue().replaceFirst("code=", "");
-			m.authorize(cod, MeliUtils.Auth_Redirect_Url);
-			System.out.println("token: " + m.getAccessToken());
-			
-			params.clear();
-			params.add("access_token", m.getAccessToken());
-			Response response = m.get("/users/me?", params);
-			if (response.getStatusCode() == 200) {
-				UserCurrent usu = ParseJson.me(response.getResponseBody(), m.getAccessToken(),  m.getRefreshToken());
-				sesion.logIn(usu);		
-			} else {
-				ZkUtils.problemasInternet();
-				return;
-			}
-		}
-		System.out.println(sesion.sesion.getAttribute("accessToken"));
-		System.out.println(sesion.sesion.getAttribute("id"));
-		 */
-		createListQuestions();
-	}
-
-	private void createListQuestions() throws MeliException, IOException, ExecutionException {
+//		
+//		if (sesion.sesion.getAttribute("id") == null) {
+//			System.out.println("ACTIVO CON LA SESION");
+//			String cod = code.getValue().replaceFirst("code=", "");
+//			m.authorize(cod, MeliUtils.Auth_Redirect_Url);
+//			System.out.println("token: " + m.getAccessToken());
+//			
+//			params.clear();
+//			params.add("access_token", m.getAccessToken());
+//			Response response = m.get("/users/me?", params);
+//			if (response.getStatusCode() == 200) {
+//				UserCurrent usu = ParseJson.me(response.getResponseBody(), m.getAccessToken(),  m.getRefreshToken());
+//				sesion.logIn(usu);		
+//			} else {
+//				ZkUtils.problemasInternet();
+//				return;
+//			}
+//		}
+//		System.out.println(sesion.sesion.getAttribute("accessToken"));
+//		System.out.println(sesion.sesion.getAttribute("id"));
+//		
 		
 		// Estas dos lineas son solo para modo TEST.
 		params.add("access_token", tokenAux);
 		params.add("seller_id", idUsuarioAux);
-		
+				
 //		params.add("seller_id", String.valueOf( sesion.sesion.getAttribute("id") ));
+		params.add("status", "UNANSWERED");
+		createListQuestions(0, 0);
+	}
+
+	private void createListQuestions(int offset, int i) throws MeliException, IOException, ExecutionException {
+		if (params.containsKey("offset")) {
+			params.replaceWith("offset", String.valueOf(offset));
+			
+		} else {
+			params.add("offset", String.valueOf(offset));
+		}
 		
 		Response response = m.get("/questions/search?", params);	
-		System.out.println(response.getResponseBody());
+
 		if (response.getStatusCode() == 200) {
-			List<Question> questions = ParseJson.questions(response.getResponseBody());
+			
+			totalQuestions = ParseJson.totalQuestions(response.getResponseBody());
+			
+			if (totalQuestions <= MeliUtils.LimitRequest) {
+				questions.addAll( ParseJson.questions(response.getResponseBody()) );
+				
+			} else {
+				questions.addAll( ParseJson.questions(response.getResponseBody()) );
+				totalQuestions -= MeliUtils.LimitRequest;
+				i++;	
+				createListQuestions(0, i * MeliUtils.LimitRequest);
+			}
 			
 			if (questions.size() > 0) {
 				listQuestions.setModel(new ListModelList<Question> (questions));
