@@ -39,3 +39,17 @@
   - Filtracion por json questions
   - Optimizacion de la busqueda de questions
   - Listado solo de preguntas sin responder
+#### September 8, 2017
+  - Comparator by user
+  - Sort Usuario
+  - Filter Usuario
+  - Reformulacion modelos
+#### September 9, 2017
+  - Comparator by date
+  - Sort Fecha
+  - Sort Inverse Fecha
+  - Filter Fecha
+  - Comparator by items
+  - Sort Publicacion
+  - Filter Publicacion
+  - Reload Questions 

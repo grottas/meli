@@ -30,7 +30,7 @@ public class MenuControlador extends SelectorComposer<Component> {
 		super.doAfterCompose(comp);
 
 		List<Menu> menu = new ArrayList<Menu>();
-		menu.add(new Menu("inicio.zul", 0, "fa fa-list-ul", "Meli", null ));
+		menu.add(new Menu("inicio.zul", 0, "fa fa-list-ul", "Gestión de Preguntas", null ));
 		menu.add(new Menu("", 0, "fa fa-sign-out", "Cerrar Sesión", null));
 		
 		createmenu(menu);

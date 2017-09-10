@@ -18,6 +18,15 @@
 <?script type="text/javascript" src="/assets/inspinia-2.7.1/js/pace.min.js"?>
 
 <zk xmlns:n="xhtml">
+	<style>
+		.z-datebox-input {
+			width: 100%;
+			height: 100%;
+		}
+		.z-datebox-button {
+			height: 100%;
+		}
+	</style>
 	<div id="wrapper" apply="controlador.ControladorInicio">
 	<include src="/ui/menu.zul"/>
 		
@@ -36,11 +45,11 @@
 	        			<div class="col-xs-12 col-sm-6 col-md-4" style="text-align: left;">
 	        				<n:p>Filtros</n:p>
 			        		<div class="btn-group">
-			                    <n:button class="btn btn-white" type="button">Cliente</n:button>
-			                    <n:button class="btn btn-primary" type="button">Fecha</n:button>
-			                    <n:button class="btn btn-white" type="button">Producto</n:button>
+			                    <n:button id="sortUsuario" class="btn btn-white" type="button">Usuario</n:button>
+			                    <n:button id="sortFecha" class="btn btn-white" type="button">Fecha</n:button>
+			                    <n:button id="sortPublicacion" class="btn btn-white" type="button">Publicación</n:button>
 			                </div>
-			            	<n:button class="btn btn-white" type="button"><n:i class="fa fa-refresh"></n:i></n:button>
+			            	<n:button id="reloadQuestions" class="btn btn-white" type="button"><n:i class="fa fa-refresh"></n:i></n:button>
 	                    </div>
                     
                     	<div class="col-xs-12 col-sm-6 col-md-4" style="text-align: left;">
@@ -53,10 +62,22 @@
                     	
                     	<div class="col-xs-12 col-sm-12 col-md-4">
                     		<n:p style="visibility: hidden;">Busqueda</n:p>
-                    		<div class="input-group">
-		                    	<textbox type="text" class="form-control input-sm" placeholder="Filtrar lista" />
+                    		<div id="filterUsuarioContent" class="input-group">
+		                    	<textbox id="filterUsuario" type="text" class="form-control input-sm" placeholder="Filtrar por usuario" />
 			                    <div class="input-group-btn">
-			                    	<n:button type="button" class="btn btn-sm btn-primary">Buscar</n:button>
+			                    	<n:button id="btnFilterUsuario" type="button" class="btn btn-sm btn-primary">Buscar</n:button>
+			                    </div>
+			                </div>
+			                <div class="input-group" id="filterFechaContent" visible="false">
+			                	<datebox id="filterFecha" format="dd/MM/yyyy" placeholder="Filtrar por fecha" hflex="1" style="padding: 0; width: 100%; height: 100%;"/>
+			                    <div class="input-group-btn" style="visibility: hidden;">
+			                    	<n:button id="btnFilterFecha" type="button" class="btn btn-sm btn-primary">Buscar</n:button>
+			                    </div>
+			                </div>
+			                <div class="input-group" id="filterPublicacionContent" visible="false">
+			                	<combobox id="filterPublicacion" class="form-control input-sm" autocomplete="true" placeholder="Filtrar por publicacion" autodrop="true" buttonVisible="false" hflex="1" vflex="1" style="padding: 0;"/>			                
+			                    <div class="input-group-btn">
+			                    	<n:button id="btnFilterPublicacion" type="button" class="btn btn-sm btn-primary">Buscar</n:button>
 			                    </div>
 			                </div>
                     	</div>
@@ -69,25 +90,25 @@
 							
 								<listcell>
 									<hbox style="width: 100%;">
-											<n:a href="${ $composer.getBuscarProductoPorId(each.item_id, 'url') }" target="_blank">
-												<image src="${ $composer.getBuscarProductoPorId(each.item_id, 'imagen') }" /> 
+											<n:a href="${each.item.permalink}" target="_blank">
+												<image src="${each.item.imagen}" /> 
 											</n:a>
 										<vbox style="width: 100%;">
-											<n:a href="${ $composer.getBuscarProductoPorId(each.item_id, 'url') }" target="_blank">
-												<label value="${ $composer.getBuscarProductoPorId(each.item_id, 'nombre') }"></label> 
+											<n:a href="${each.item.permalink}" target="_blank">
+												<label value="${each.item.nombre}"></label> 
 											</n:a>
 												
 											<hbox style="width: 100%;">
-												<n:a href="${ $composer.getBuscarClientePorId(each.from.id, 'url') }" target="_blank">
-													<label value="${ $composer.getBuscarClientePorId(each.from.id, 'nombre') }"></label>
+												<n:a href="${each.seller.permalink}" target="_blank">
+													<label value="${each.seller.nickname}"></label>
 												</n:a>
 												-
-												<label value="${ $composer.getBuscarClientePorId(each.from.id, 'puntos') } puntos"></label>
+												<label value="${each.seller.points} puntos"></label>
 												<!--  
 												<label value="${each.status}" class="${each.statusColor}" onClick="$composer.mostrarRespuesta()"></label>
 												-->
 												<n:i class="fa fa-clock-o"></n:i>
-												<label value="${each.date_created}"></label>
+												<label value="${ $composer.dateFormat(each.date_created) }"></label>
 											</hbox>
 											
 											<label value="${each.text}" style="margin-left: 20px;"></label>
@@ -118,7 +139,7 @@
 </zk>
 
 <!-- 
-	
+	http://developers.mercadolibre.com/es/server-side/	
 	http://www.pregunteca.com/login
 
 	https://developers.mercadolibre.com.ve/apps/home

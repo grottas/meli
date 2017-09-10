@@ -1,6 +1,7 @@
 package utils;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 
 import java.util.List;
@@ -57,7 +58,7 @@ public final class ParseJson {
 		return Integer.valueOf(buscarJson(obj, "total"));	
 	}
 	
-	public static List<Question> questions(String json) {
+	public static List<Question> questions(String json) throws ParseException {
 		System.out.println(json);		
 			
 		List<Question> list = new ArrayList<>();
@@ -83,7 +84,7 @@ public final class ParseJson {
 			
 			list.add(new Question(buscarJson(question, "id"), 
 								  answer, 
-								  ZkUtils.dateFormat( buscarJson(question, "date_created") ), 
+								  ZkUtils.dateFormat.parse(buscarJson(question, "date_created") ), 
 								  buscarJson(question, "item_id"), 
 								  buscarJson(question, "seller_id"), 
 								  Question.STATUS.get( buscarJson(question, "status") ), 

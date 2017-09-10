@@ -1,6 +1,8 @@
 package utils;
 
+import java.text.DateFormat;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.zkoss.zk.ui.Component;
@@ -11,7 +13,10 @@ import org.zkoss.zk.ui.util.Clients;
 public final class ZkUtils {
 	
 	private static DecimalFormat df = new DecimalFormat("###,###,###,###.00");
-			
+	public static DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+	public static SimpleDateFormat dateMacht = new SimpleDateFormat("yyyy-MM-dd");
+	public static SimpleDateFormat dateToShow = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+	
 	public static void redireccion(String url) {
 		Executions.sendRedirect(url);
 	}

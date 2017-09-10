@@ -1,10 +1,11 @@
 package modelo;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Question {
+public class Question { // implements Comparable<Question> {
 	
 	public static final Map<String, String> STATUS = createMap();
 
@@ -35,13 +36,15 @@ public class Question {
 	private Answer answer;
 	
 	// Creation date.
-	private String date_created;
+	private Date date_created;
 	
 	// Item Id that the question belongs to.
 	private String item_id;
+	private Producto item;
 	
 	//Seller Id of the item.
 	private String seller_id;
+	private User seller;
 	
 	//	unanswered: 		Question is not answered yet.
 	//	answered:			Question was answered.
@@ -60,7 +63,7 @@ public class Question {
 	
 	private From from;
 	
-	public Question(String id, Answer answer, String date_created,
+	public Question(String id, Answer answer, Date date_created,
 			String item_id, String seller_id, String status, String statusColor,
 			String text, boolean deleted_from_listing, boolean hold, From from) {
 		super();
@@ -75,8 +78,26 @@ public class Question {
 		this.deleted_from_listing = deleted_from_listing;
 		this.hold = hold;
 		this.from = from;
+		this.seller = null;
+		this.item = null;
 	}
-	
+
+	public Producto getItem() {
+		return item;
+	}
+
+	public void setItem(Producto item) {
+		this.item = item;
+	}
+
+	public User getSeller() {
+		return seller;
+	}
+
+	public void setSeller(User seller) {
+		this.seller = seller;
+	}
+
 	public String getStatusColor() {
 		return statusColor;
 	}
@@ -125,11 +146,11 @@ public class Question {
 		this.answer = answer;
 	}
 
-	public String getDate_created() {
+	public Date getDate_created() {
 		return date_created;
 	}
 
-	public void setDate_created(String date_created) {
+	public void setDate_created(Date date_created) {
 		this.date_created = date_created;
 	}
 
@@ -164,5 +185,11 @@ public class Question {
 	public void setText(String text) {
 		this.text = text;
 	}
-	
+
+//	@Override
+//	public int compareTo(Question arg0) {
+//		// TODO Auto-generated method stub
+//		return 0;
+//	}
+//	
 }
