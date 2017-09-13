@@ -2,18 +2,16 @@ package controlador;
 
 import java.io.IOException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeoutException;
 import java.util.regex.Pattern;
 
+import modelo.AnswerRequest;
 import modelo.Producto;
 import modelo.Question;
 import modelo.User;
@@ -21,11 +19,12 @@ import modelo.UserCurrent;
 
 import org.zkoss.zhtml.Button;
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.Execution;
+import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.Wire;
-import org.zkoss.zkmax.zul.Chosenbox;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Datebox;
@@ -35,6 +34,7 @@ import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Textbox;
 
+import plugin.AuthorizationFailure;
 import plugin.Meli;
 import plugin.MeliException;
 import plugin.MeliUtils;
@@ -53,7 +53,6 @@ import comparator.CompareQuestionsByUser;
 public class ControladorInicio extends SelectorComposer<Component> {
 	
 	private static final long serialVersionUID = 1L; 
-	@Wire private Label code;
 	@Wire private Listbox listQuestions;
 	@Wire private Button sortUsuario;
 	@Wire private Button sortFecha;
@@ -76,51 +75,56 @@ public class ControladorInicio extends SelectorComposer<Component> {
 	private static Map<String, User> users = new HashMap<String, User>();
 	private static Map<String, Producto> products = new HashMap<String, Producto>();
 	
-	private String tokenAux = "APP_USR-8051032385985753-090921-552b238e7acb570e24b79cc7ae726ef1__H_G__-268910416";
+	private String tokenAux = "APP_USR-8051032385985753-091220-b0efc092ab40646dc10f8fc77a741c57__N_G__-268910416";
 	private String idUsuarioAux = "268910416";
 	
 	@Override
 	 public void doAfterCompose(Component comp) throws Exception, ExecutionException {
 		super.doAfterCompose(comp);
 		
-		
+		getCodeMeli();		
+//		prepareToSearchQuestions();
+	}
+
+	private void getCodeMeli() throws AuthorizationFailure, IOException, MeliException, ExecutionException, ParseException {
 		if (sesion.sesion.getAttribute("id") == null) {
-			System.out.println("ACTIVO CON LA SESION");
-			String cod = code.getValue().replaceFirst("code=", "");
-			m.authorize(cod, MeliUtils.Auth_Redirect_Url);
+			m.authorize(ZkUtils.getMeliCode(), MeliUtils.Auth_Redirect_Url);
 			System.out.println("token: " + m.getAccessToken());
 			
-			params.clear();
-			params.add("access_token", m.getAccessToken());
 			Response response = m.get("/users/me?", params);
 			if (response.getStatusCode() == 200) {
 				UserCurrent usu = ParseJson.me(response.getResponseBody(), m.getAccessToken(),  m.getRefreshToken());
 				sesion.logIn(usu);		
 				
-				params.add("access_token", sesion.sesion.getAttribute("accessToken").toString());
-				params.add("seller_id", sesion.sesion.getAttribute("id").toString());
-				params.add("status", "UNANSWERED");
-				createListQuestions(0, 0);
-				
+				prepareToSearchQuestions();
 			} else {
 				ZkUtils.problemasInternet();
 				return;
 			}
 		} else {
-			params.add("access_token", sesion.sesion.getAttribute("accessToken").toString());
-			params.add("seller_id", sesion.sesion.getAttribute("id").toString());
-			
-			
-			// Estas dos lineas son solo para modo TEST.
-//			params.add("access_token", tokenAux);
-//			params.add("seller_id", idUsuarioAux);
-					
-//			params.add("seller_id", String.valueOf( sesion.sesion.getAttribute("id") ));
-			params.add("status", "UNANSWERED");
-			createListQuestions(0, 0);
+			prepareToSearchQuestions();
 		}
-		System.out.println(sesion.sesion.getAttribute("accessToken"));
-		System.out.println(sesion.sesion.getAttribute("id"));
+	}
+	
+	private void prepareToSearchQuestions() throws MeliException, IOException, ExecutionException, ParseException {
+		params.clear(); 
+//		params.add("access_token", sesion.sesion.getAttribute("accessToken").toString());
+//		params.add("seller_id", sesion.sesion.getAttribute("id").toString());
+		
+		// Estas dos lineas son solo para modo TEST.
+		params.add("access_token", tokenAux);
+		params.add("seller_id", idUsuarioAux);
+		
+		params.add("status", validarPaginaActual() == 1 ? "UNANSWERED" : "ANSWERED");
+		createListQuestions(0, 0);
+	}
+
+	public int validarPaginaActual() {
+		return ZkUtils.getPathRequest().equals("/inicio.zul") ? 1 : 2;		
+	}
+	
+	public String getTitulo() {
+		return validarPaginaActual() == 1 ? "Gestión de Preguntas" : "Gestión de Preguntas y Respuestas";
 	}
 
 	private void createListQuestions(int offset, int i) throws MeliException, IOException, ExecutionException, ParseException {
@@ -291,7 +295,7 @@ public class ControladorInicio extends SelectorComposer<Component> {
 			
 			filterPublicacion.setValue("");
 			filterUsuario.setValue("");
-			filterFecha.setValue(new Date());
+			filterFecha.setValue(null);
 			
 			button.setSclass("btn btn-success");
 		}
@@ -407,8 +411,17 @@ public class ControladorInicio extends SelectorComposer<Component> {
 		return ZkUtils.dateToShow.format(date);
 	}
 	
-	public void mostrarRespuesta() {
-		System.out.println(listQuestions.getSelectedIndex());
+	@Listen("onClick = #btnResponder")
+	public void responderPregunta() {
+//		if (listQuestions.getSelectedIndex() == -1) {
+//			ZkUtils.mensaje("Seleccione una pregunta", 1, null);
+//		} else {
+//			Question selected = listQuestions.getSelectedItem().getValue();
+//			ArrayList<AnswerRequest> answerRequests = new ArrayList<AnswerRequest>();
+//			answerRequests.add(new AnswerRequest(selected.getId(), selected.getSeller().getNickname()));
+//			
+//			ZkUtils.crearModal("meli/responder.zul", MeliUtils.arg(answerRequests));			
+//		}
 	}
- 
+
 }

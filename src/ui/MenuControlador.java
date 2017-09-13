@@ -1,6 +1,7 @@
 package ui;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 //import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -30,7 +31,7 @@ public class MenuControlador extends SelectorComposer<Component> {
 		super.doAfterCompose(comp);
 
 		List<Menu> menu = new ArrayList<Menu>();
-		menu.add(new Menu("inicio.zul", 0, "fa fa-list-ul", "Gestión de Preguntas", null ));
+		menu.add(new Menu("", 1, "fa fa-list-ul", "Gestión de Preguntas", Arrays.asList("Preguntas por Gestionar", "Preguntas Gestionadas") ));
 		menu.add(new Menu("", 0, "fa fa-sign-out", "Cerrar Sesión", null));
 		
 		createmenu(menu);
@@ -81,6 +82,8 @@ public class MenuControlador extends SelectorComposer<Component> {
 			li.setSclass("second-label active");
 			Ul ul = (Ul) li.getChildren().get(3);
 			ul.setSclass("nav nav-second-level collapse in");
+		} else if (li.getSclass().equals("default")) {
+			redireccionamiento(li);
 		}
 	}
 
@@ -89,6 +92,14 @@ public class MenuControlador extends SelectorComposer<Component> {
 			sesion.cerrarSesion();
 		}
 		ZkUtils.redireccion("/" + li.getId());
+	}
+	
+	public String setSecondLevelMenuId(String name) {
+		switch (name) {
+			case "Preguntas por Gestionar": return "inicio.zul";
+			case "Preguntas Gestionadas": return "preguntas_gestionadas.zul";
+			default: return "";
+		}
 	}
 	
 }

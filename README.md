@@ -53,3 +53,7 @@
   - Sort Publicacion
   - Filter Publicacion
   - Reload Questions 
+#### September 12, 2017
+  - preguntas por gestionar
+  - preguntas gestionadas
+  - bug req 5

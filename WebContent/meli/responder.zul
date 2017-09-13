@@ -1,0 +1,25 @@
+<zk xmlns:n="xhtml">
+	<window action="show: slideDown({duration: 300}); hide: slideUp({duration: 100})"
+		border="none" id="win" apply="ui.ResponderControlador">
+		
+		<label value="Responder a: "/>
+		<hbox>
+		<div forEach="${arg.answerRequests}">
+			<label value="${forEachStatus.index == 0 ? '' : ','} ${each.user_name}" style="font-weight: bold;"/>
+			<label value="${each.id_question}" visible="false"/>
+		</div>
+		</hbox>
+		
+		<separator bar="true" spacing="5px"/>
+		
+		<vbox>
+			<textbox multiline="true" hflex="1"/>
+			<hbox>
+				<n:button id="closeWin" class="btn btn-white" type="button">Cancelar</n:button>
+				<separator bar="false" spacing="5px"/>
+				<n:button class="btn btn-primary" type="button">Responder</n:button>
+			</hbox>	
+		</vbox>
+		
+	</window>
+</zk>

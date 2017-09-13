@@ -4,11 +4,13 @@ import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Map;
 
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.select.Selectors;
 import org.zkoss.zk.ui.util.Clients;
+import org.zkoss.zul.Window;
 
 public final class ZkUtils {
 	
@@ -19,6 +21,15 @@ public final class ZkUtils {
 	
 	public static void redireccion(String url) {
 		Executions.sendRedirect(url);
+	}
+	
+	public static String getPathRequest() {
+		return Executions.getCurrent().getDesktop().getRequestPath();
+	}
+	
+	public static String getMeliCode() {
+		String cod = Executions.getCurrent().getDesktop().getQueryString();
+		return cod.replaceFirst("code=", "");
 	}
 	
 	public static void mensaje(String mensaje, int tipo, Component com) {
@@ -38,6 +49,11 @@ public final class ZkUtils {
 	public static void crearComponente(Component component, Object object) {
 		Selectors.wireComponents(component, object, false);
 		Selectors.wireEventListeners(component, object);
+	}
+	
+	public static void crearModal(String zul, Map<?, ?> arg) {
+		Window window = (Window) Executions.createComponents (zul ,null, arg);
+		window.doModal();
 	}
 	
 	public static void removerTodo(Component componente) {
