@@ -75,7 +75,7 @@ public class ControladorInicio extends SelectorComposer<Component> {
 	private static Map<String, User> users = new HashMap<String, User>();
 	private static Map<String, Producto> products = new HashMap<String, Producto>();
 	
-	private String tokenAux = "APP_USR-8051032385985753-091220-b0efc092ab40646dc10f8fc77a741c57__N_G__-268910416";
+	private String tokenAux = "APP_USR-8051032385985753-091320-af9f7cfdb323182124a5b97b999d64f0__L_N__-268910416";
 	private String idUsuarioAux = "268910416";
 	
 	@Override
@@ -90,6 +90,7 @@ public class ControladorInicio extends SelectorComposer<Component> {
 		if (sesion.sesion.getAttribute("id") == null) {
 			m.authorize(ZkUtils.getMeliCode(), MeliUtils.Auth_Redirect_Url);
 			System.out.println("token: " + m.getAccessToken());
+			params.add("access_token", m.getAccessToken());
 			
 			Response response = m.get("/users/me?", params);
 			if (response.getStatusCode() == 200) {
@@ -108,12 +109,12 @@ public class ControladorInicio extends SelectorComposer<Component> {
 	
 	private void prepareToSearchQuestions() throws MeliException, IOException, ExecutionException, ParseException {
 		params.clear(); 
-//		params.add("access_token", sesion.sesion.getAttribute("accessToken").toString());
-//		params.add("seller_id", sesion.sesion.getAttribute("id").toString());
+		params.add("access_token", sesion.sesion.getAttribute("accessToken").toString());
+		params.add("seller_id", sesion.sesion.getAttribute("id").toString());
 		
 		// Estas dos lineas son solo para modo TEST.
-		params.add("access_token", tokenAux);
-		params.add("seller_id", idUsuarioAux);
+//		params.add("seller_id", idUsuarioAux);
+//		params.add("access_token", tokenAux);
 		
 		params.add("status", validarPaginaActual() == 1 ? "UNANSWERED" : "ANSWERED");
 		createListQuestions(0, 0);
@@ -413,15 +414,15 @@ public class ControladorInicio extends SelectorComposer<Component> {
 	
 	@Listen("onClick = #btnResponder")
 	public void responderPregunta() {
-//		if (listQuestions.getSelectedIndex() == -1) {
-//			ZkUtils.mensaje("Seleccione una pregunta", 1, null);
-//		} else {
-//			Question selected = listQuestions.getSelectedItem().getValue();
-//			ArrayList<AnswerRequest> answerRequests = new ArrayList<AnswerRequest>();
-//			answerRequests.add(new AnswerRequest(selected.getId(), selected.getSeller().getNickname()));
-//			
-//			ZkUtils.crearModal("meli/responder.zul", MeliUtils.arg(answerRequests));			
-//		}
+		if (listQuestions.getSelectedIndex() == -1) {
+			ZkUtils.mensaje("Seleccione una pregunta", 1, null);
+		} else {
+			Question selected = listQuestions.getSelectedItem().getValue();
+			ArrayList<AnswerRequest> answerRequests = new ArrayList<AnswerRequest>();
+			answerRequests.add(new AnswerRequest(selected.getId(), selected.getSeller().getNickname()));
+			
+			ZkUtils.crearModal("meli/responder.zul", MeliUtils.arg(answerRequests));			
+		}
 	}
 
 }

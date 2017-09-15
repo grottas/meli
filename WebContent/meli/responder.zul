@@ -1,24 +1,29 @@
 <zk xmlns:n="xhtml">
 	<window action="show: slideDown({duration: 300}); hide: slideUp({duration: 100})"
-		border="none" id="win" apply="ui.ResponderControlador">
+		border="none" id="win" apply="ui.ResponderControlador" style="width: 50%">
 		
-		<label value="Responder a: "/>
-		<hbox>
-		<div forEach="${arg.answerRequests}">
-			<label value="${forEachStatus.index == 0 ? '' : ','} ${each.user_name}" style="font-weight: bold;"/>
-			<label value="${each.id_question}" visible="false"/>
-		</div>
+		<n:center>
+			<n:h2>Responder Pregunta</n:h2>
+		</n:center>
+		<hbox id="answerRequests">
+			<div forEach="${arg.answerRequests}">
+				<label value="${forEachStatus.index == 0 ? '' : ','} ${each.user_name}" style="font-weight: bold;" visible="false"/>
+				<label value="${each.id_question}" visible="false"/>
+			</div>
 		</hbox>
 		
 		<separator bar="true" spacing="5px"/>
 		
-		<vbox>
-			<textbox multiline="true" hflex="1"/>
-			<hbox>
-				<n:button id="closeWin" class="btn btn-white" type="button">Cancelar</n:button>
-				<separator bar="false" spacing="5px"/>
-				<n:button class="btn btn-primary" type="button">Responder</n:button>
-			</hbox>	
+		<vbox style="width: 100%">
+			<combobox id="txtRespuesta" class="form-control input-sm" buttonVisible="false" hflex="1" vflex="1" style="padding: 0;width: 90%;height: 100px;margin: 5%;"/>			                
+		
+			<n:center>
+				<hbox>	
+					<n:button id="closeWin" class="btn btn-white" type="button">Cancelar</n:button>
+					<separator bar="false" spacing="20%"/>
+					<n:button id="btnResponderQuestion" class="btn btn-primary" type="button">Responder</n:button>
+				</hbox>	
+			</n:center>
 		</vbox>
 		
 	</window>
