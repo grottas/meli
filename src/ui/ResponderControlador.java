@@ -75,7 +75,14 @@ public class ResponderControlador extends SelectorComposer<Component> {
 			txtRespuesta.setOpen(true);
 		}
 		
+		System.out.println(txtRespuesta.getValue() + " " + validarArroba());
+	}
+	
+	private boolean validarArroba() {
 		System.out.println(txtRespuesta.getValue());
+		String arroba = txtRespuesta.getValue().substring(txtRespuesta.getValue().length() - 2);
+		System.out.println(arroba);
+		return arroba.equals("@");
 	}
 
 }

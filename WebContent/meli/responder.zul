@@ -1,4 +1,4 @@
-<zk xmlns:n="xhtml">
+<zk xmlns:n="xhtml" xmlns:w="client">
 	<window action="show: slideDown({duration: 300}); hide: slideUp({duration: 100})"
 		border="none" id="win" apply="ui.ResponderControlador" style="width: 50%">
 		
@@ -15,7 +15,7 @@
 		<separator bar="true" spacing="5px"/>
 		
 		<vbox style="width: 100%">
-			<combobox id="txtRespuesta" class="form-control input-sm" buttonVisible="false" hflex="1" vflex="1" style="padding: 0;width: 90%;height: 100px;margin: 5%;"/>			                
+			<combobox id="txtRespuesta" class="form-control input-sm" buttonVisible="false" hflex="1" vflex="1" style="padding: 0;width: 90%;height: 100px;margin: 5%;"/>		                
 		
 			<n:center>
 				<hbox>	

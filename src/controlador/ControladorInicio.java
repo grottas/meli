@@ -18,9 +18,8 @@ import modelo.User;
 import modelo.UserCurrent;
 
 import org.zkoss.zhtml.Button;
+import org.zkoss.zhtml.I;
 import org.zkoss.zk.ui.Component;
-import org.zkoss.zk.ui.Execution;
-import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.Listen;
@@ -29,7 +28,6 @@ import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Div;
-import org.zkoss.zul.Label;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Textbox;
@@ -60,6 +58,7 @@ public class ControladorInicio extends SelectorComposer<Component> {
 	@Wire private Textbox filterUsuario;
 	@Wire private Combobox filterPublicacion;
 	@Wire private Datebox filterFecha;
+	@Wire private I iconFecha;
 	
 	@Wire private Div filterUsuarioContent;	
 	@Wire private Div filterPublicacionContent;
@@ -75,7 +74,7 @@ public class ControladorInicio extends SelectorComposer<Component> {
 	private static Map<String, User> users = new HashMap<String, User>();
 	private static Map<String, Producto> products = new HashMap<String, Producto>();
 	
-	private String tokenAux = "APP_USR-8051032385985753-091320-af9f7cfdb323182124a5b97b999d64f0__L_N__-268910416";
+	private String tokenAux = "APP_USR-8051032385985753-091922-ddabc49d7bffe577c3a199b324ed30af__A_M__-268910416";
 	private String idUsuarioAux = "268910416";
 	
 	@Override
@@ -144,7 +143,7 @@ public class ControladorInicio extends SelectorComposer<Component> {
 				validateSearchQuestions = !validateSearchQuestions;
 				totalQuestions = ParseJson.totalQuestions(response.getResponseBody());				
 			}
-			
+
 			if (totalQuestions <= MeliUtils.LimitRequest) {
 				questions.addAll( ParseJson.questions(response.getResponseBody()) );
 				searchFrom(0);
@@ -163,8 +162,12 @@ public class ControladorInicio extends SelectorComposer<Component> {
 	
 	@Listen("onClick = #reloadQuestions")
 	public void reloadListQuestions() throws MeliException, IOException, ExecutionException, ParseException {
+		System.out.println("Refresh");
 		validateSearchQuestions = true;
 		questions.clear();
+		users.clear();
+		products.clear();
+		
 		createListQuestions(0, 0);
 	}
 	
@@ -233,6 +236,9 @@ public class ControladorInicio extends SelectorComposer<Component> {
 		} else {
 			setComboPublicacion();
 			setListModel();
+			
+			// Set default sort
+			sortByDate();
 		}
 	}
 
@@ -284,15 +290,19 @@ public class ControladorInicio extends SelectorComposer<Component> {
 		if (button.getId().equals("sortFecha") && !(button.getSclass().equals("btn btn-white"))) {			
 			if (button.getSclass().equals("btn btn-success")) {
 				// info - order
+				iconFecha.setSclass("fa fa-sort-amount-asc");
 				button.setSclass("btn btn-info");
 			} else {
 				// back status - reverse
+				iconFecha.setSclass("fa fa-sort-amount-desc");
 				button.setSclass("btn btn-success");
 			}
 		} else {
 			sortUsuario.setSclass("btn btn-white");
 			sortFecha.setSclass("btn btn-white");
 			sortPublicacion.setSclass("btn btn-white");
+			
+			iconFecha.setSclass("fa fa-sort-amount-desc");
 			
 			filterPublicacion.setValue("");
 			filterUsuario.setValue("");

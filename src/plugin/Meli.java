@@ -134,11 +134,12 @@ public class Meli {
 			throws MeliException {
 		BoundRequestBuilder r = prepareGet(path, params);
 
-		Response response;
+		Response response = null;
 		try {
 			response = r.execute().get();
 		} catch (Exception e) {
-			throw new MeliException(e);
+			return response;
+//			throw new MeliException(e);
 		}
 		if (params.containsKey("access_token") && this.hasRefreshToken()
 				&& response.getStatusCode() == 404) {

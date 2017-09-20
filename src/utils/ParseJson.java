@@ -52,7 +52,7 @@ public final class ParseJson {
 	}
 	
 	public static int totalQuestions(String json) {
-		System.out.println(json);
+		System.out.println("Total: " + json);
 		
 		JsonElement obj = stringToJsonElement(json);
 		return Integer.valueOf(buscarJson(obj, "total"));	

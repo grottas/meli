@@ -57,3 +57,13 @@
   - preguntas por gestionar
   - preguntas gestionadas
   - bug req 5
+#### September 19, 2017
+  - Observaciones de primera revision
+  - Componente Responder
+  - Maquetar ventana de responder
+  - Visualizar Tags con @ (pendiente)
+  - Cargar lista de Tags
+  - Mostrar lista de Tags
+  - Obtener id pregunta a responder
+  - Publicar respuesta (pendiente)
+  - Eliminar pregunta gestionada de listado de por gestionar (pendiente)
