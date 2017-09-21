@@ -15,8 +15,11 @@
 		<separator bar="true" spacing="5px"/>
 		
 		<vbox style="width: 100%">
-			<combobox id="txtRespuesta" class="form-control input-sm" buttonVisible="false" hflex="1" vflex="1" style="padding: 0;width: 90%;height: 100px;margin: 5%;"/>		                
-		
+			<div style="margin: 5%;">
+				<combobox id="comboRespuesta" autocomplete="true" class="form-control input-sm" buttonVisible="false" vflex="1" style="padding: 0; width:98%; border: 1px solid transparent; position: relative;top: 32px;"/>		                
+				<textbox id="txtRespuesta" multiline="true" rows="5" style="resize: none;width:100%; padding: 0px;position: relative; bottom: 45px;"/>		
+			</div>
+	
 			<n:center>
 				<hbox>	
 					<n:button id="closeWin" class="btn btn-white" type="button">Cancelar</n:button>

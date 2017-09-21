@@ -61,9 +61,10 @@
   - Observaciones de primera revision
   - Componente Responder
   - Maquetar ventana de responder
-  - Visualizar Tags con @ (pendiente)
+  - Visualizar Tags con @
   - Cargar lista de Tags
   - Mostrar lista de Tags
   - Obtener id pregunta a responder
+  - Componente Typeahead
   - Publicar respuesta (pendiente)
   - Eliminar pregunta gestionada de listado de por gestionar (pendiente)

@@ -74,7 +74,7 @@ public class ControladorInicio extends SelectorComposer<Component> {
 	private static Map<String, User> users = new HashMap<String, User>();
 	private static Map<String, Producto> products = new HashMap<String, Producto>();
 	
-	private String tokenAux = "APP_USR-8051032385985753-091922-ddabc49d7bffe577c3a199b324ed30af__A_M__-268910416";
+	private String tokenAux = "APP_USR-8051032385985753-092020-b6d15b0e976e956c4b1bdc2a6e8f06fa__E_F__-268910416";
 	private String idUsuarioAux = "268910416";
 	
 	@Override
