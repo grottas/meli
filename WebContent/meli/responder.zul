@@ -9,6 +9,7 @@
 			<div forEach="${arg.answerRequests}">
 				<label value="${forEachStatus.index == 0 ? '' : ','} ${each.user_name}" style="font-weight: bold;" visible="false"/>
 				<label value="${each.id_question}" visible="false"/>
+				<label value="${each.index}" visible="false"/>
 			</div>
 		</hbox>
 		
@@ -17,8 +18,13 @@
 		<vbox style="width: 100%">
 			<div style="margin: 5%;">
 				<combobox id="comboRespuesta" autocomplete="true" class="form-control input-sm" buttonVisible="false" vflex="1" style="padding: 0; width:98%; border: 1px solid transparent; position: relative;top: 32px;"/>		                
-				<textbox id="txtRespuesta" multiline="true" rows="5" style="resize: none;width:100%; padding: 0px;position: relative; bottom: 45px;"/>		
+				<textbox id="txtRespuesta" multiline="true" rows="5" style="resize: none;width:100%; padding: 0px;position: relative; bottom: 45px;"/>						
 			</div>
+			
+			<n:center>
+				<label id="labelProgress"/>
+			</n:center>
+			<progressmeter id="progressmeter" visible="false" value="0" style="width:100% !important;"/>
 	
 			<n:center>
 				<hbox>	

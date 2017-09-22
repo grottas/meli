@@ -1,12 +1,19 @@
 package ui;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
 import modelo.Tag;
 
+import org.zkoss.zhtml.Button;
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.EventListener;
+import org.zkoss.zk.ui.event.EventQueue;
+import org.zkoss.zk.ui.event.EventQueues;
 import org.zkoss.zk.ui.event.InputEvent;
 import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.Listen;
@@ -15,10 +22,21 @@ import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Div;
 import org.zkoss.zul.Hbox;
 import org.zkoss.zul.Label;
+import org.zkoss.zul.Progressmeter;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 import org.zkoss.zul.Combobox;
 
+import com.ning.http.client.FluentStringsMap;
+import com.ning.http.client.Response;
+
+import plugin.Meli;
+import plugin.MeliException;
+import plugin.MeliUtils;
+
+import utils.EventQueuesUtils;
+import utils.Message;
+import utils.Sesion;
 import utils.ZkUtils;
 
 
@@ -29,8 +47,17 @@ public class ResponderControlador extends SelectorComposer<Component> {
 	@Wire private Hbox answerRequests;
 	@Wire private Combobox comboRespuesta;
 	@Wire private Textbox txtRespuesta;
+	@Wire private Button closeWin;
+	@Wire private Button btnResponderQuestion;
+	@Wire private Label labelProgress;
+	@Wire private Progressmeter progressmeter;
 	
 	private List<Comboitem> combitos = new ArrayList<Comboitem>();
+	private static Meli m = new Meli(MeliUtils.APP_ID, MeliUtils.Secret_Key);
+	private FluentStringsMap params = new FluentStringsMap();
+	private Sesion sesion = new Sesion();
+	
+	private String tokenAux = "APP_USR-8051032385985753-092119-ea71ab4aaf53c925aaed9d2aa0b74a93__I_F__-268910416";
 
 	private void cargarTags() {
 		System.out.println("TAGS");
@@ -47,15 +74,70 @@ public class ResponderControlador extends SelectorComposer<Component> {
 
 	@Listen("onClick = #closeWin")
 	public void closeWindow() {
-		win.detach();
+		if (!closeWin.getSclass().contains("disabled"))
+			win.detach();
 	}
 	
 	@Listen("onClick = #btnResponderQuestion")
-	public void responder() {
-		for (int i = 0; i < answerRequests.getChildren().size(); i++) {
-			Div div = (Div) answerRequests.getChildren().get(i);
-			Label id_questions = (Label) div.getChildren().get(1);
-			System.out.println(id_questions.getValue());
+	public void responder() throws MeliException, InterruptedException {
+		if (!btnResponderQuestion.getSclass().contains("disabled"))
+			if (!txtRespuesta.getValue().isEmpty()) {
+				// Active progress
+				progressmeter.setVisible(true);
+				// Bloquear botones
+				btnResponderQuestion.setSclass(btnResponderQuestion.getSclass() + " disabled");
+				closeWin.setSclass(closeWin.getSclass() + " disabled");
+				
+				params.clear(); 
+//				params.add("access_token", sesion.sesion.getAttribute("accessToken").toString());
+				params.add("access_token", tokenAux);
+				sendMessage(0);
+			} else {
+				ZkUtils.mensaje(Message.EmptyResponse, 1, null);
+			}
+	}
+	
+	private void sendMessage(int i) throws MeliException, InterruptedException {
+		labelProgress.setValue( Message.sendResponse(i + 1, answerRequests.getChildren().size()) );
+		progressmeter.setValue( (int) (((double) (i + 1) / answerRequests.getChildren().size()) * 100) );
+		
+		Div div = (Div) answerRequests.getChildren().get(i);
+		Label id_questions = (Label) div.getChildren().get(1);
+		Label index = (Label) div.getChildren().get(2);
+		
+		String json = "{ question_id: " + id_questions.getValue() + ",text: \"" + txtRespuesta.getValue() + "\"}";
+		
+		Response response = m.post("/answers?", params, json);
+		
+		if (response != null) {
+			if (response.getStatusCode() == 200) {
+				deleteItemAtList(id_questions.getValue());
+				continueSendMessage(i);
+			} else {
+				ZkUtils.problemasInternet();
+			}
+		} else {
+			ZkUtils.problemasInternet();
+		}
+	}
+
+	private void continueSendMessage(int i) throws MeliException, InterruptedException {
+		i++;
+		if (i < answerRequests.getChildren().size())  {
+			sendMessage(i);
+		} else {
+			TimeUnit.SECONDS.sleep(2);
+			win.detach();
+		}
+	}
+	
+	private void deleteItemAtList(String index) {
+		if (answerRequests.getChildren().size() == 1) {
+			EventQueues.lookup(EventQueuesUtils.SimpleMessage, EventQueues.DESKTOP, true)
+        	.publish(new Event ("simple change"));
+		} else {
+			EventQueues.lookup(EventQueuesUtils.MultipleMessage, EventQueues.DESKTOP, true)
+        	.publish(new Event (index));
 		}
 	}
 	

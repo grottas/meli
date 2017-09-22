@@ -64,15 +64,7 @@ public final class ZkUtils {
 	}
 	
 	public static void problemasInternet() {
-//		alerta("Intente no recargar la pantalla...", "Oops! Algo anda mal :(");
-		mensaje("Oops! Algo anda mal :( \n Intente no recargar la pantalla..", 3, null);
-//		Meli m = new Meli(MeliUtils.APP_ID, MeliUtils.Secret_Key);
-//		String redirectUrl = m.getAuthUrl(MeliUtils.Auth_Redirect_Url, Meli.AuthUrls.MLV);
-//		redireccion(redirectUrl);
-		
-		Sesion sesion = new Sesion();
-		sesion.cerrarSesion();
-		redireccion("/");
+		mensaje(Message.ConexionProblems, 3, null);
 	}
 	
 	public static String dateFormat(String date) {

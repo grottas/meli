@@ -21,21 +21,29 @@ import org.zkoss.zhtml.Button;
 import org.zkoss.zhtml.I;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.EventListener;
+import org.zkoss.zk.ui.event.EventQueue;
+import org.zkoss.zk.ui.event.EventQueues;
 import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.Wire;
+import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Div;
+import org.zkoss.zul.Hbox;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
+import org.zkoss.zul.Listcell;
+import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Textbox;
 
 import plugin.AuthorizationFailure;
 import plugin.Meli;
 import plugin.MeliException;
 import plugin.MeliUtils;
+import utils.EventQueuesUtils;
 import utils.ParseJson;
 import utils.Sesion;
 import utils.ZkUtils;
@@ -59,6 +67,7 @@ public class ControladorInicio extends SelectorComposer<Component> {
 	@Wire private Combobox filterPublicacion;
 	@Wire private Datebox filterFecha;
 	@Wire private I iconFecha;
+	@Wire private Button btnResponderMasivamente;
 	
 	@Wire private Div filterUsuarioContent;	
 	@Wire private Div filterPublicacionContent;
@@ -74,15 +83,51 @@ public class ControladorInicio extends SelectorComposer<Component> {
 	private static Map<String, User> users = new HashMap<String, User>();
 	private static Map<String, Producto> products = new HashMap<String, Producto>();
 	
-	private String tokenAux = "APP_USR-8051032385985753-092020-b6d15b0e976e956c4b1bdc2a6e8f06fa__E_F__-268910416";
+	private String tokenAux = "APP_USR-8051032385985753-092119-ea71ab4aaf53c925aaed9d2aa0b74a93__I_F__-268910416";
 	private String idUsuarioAux = "268910416";
 	
 	@Override
 	 public void doAfterCompose(Component comp) throws Exception, ExecutionException {
 		super.doAfterCompose(comp);
 		
-		getCodeMeli();		
-//		prepareToSearchQuestions();
+//		getCodeMeli();		
+		prepareToSearchQuestions();
+		eventQueue();
+	}
+
+	private void eventQueue() {
+		EventQueues.lookup(EventQueuesUtils.SimpleMessage, EventQueues.DESKTOP, true)
+			.subscribe(new EventListener<Event>() {
+			
+			@Override
+			public void onEvent(Event arg) throws Exception {
+				System.out.println("simple");
+				Listitem item = listQuestions.getSelectedItem();
+				listQuestions.removeChild( item );
+				questions.remove( item.getValue() );
+			}
+		});
+		
+		EventQueues.lookup(EventQueuesUtils.MultipleMessage, EventQueues.DESKTOP, true)
+			.subscribe(new EventListener<Event>() {
+			
+			@Override
+			public void onEvent(Event arg) throws Exception {
+				System.out.println("multiple");
+				Listitem item = listQuestions.getItemAtIndex( buscarQuestionById(arg.getName()) );
+				listQuestions.removeChild( item );
+				questions.remove( item.getValue() );
+			}
+		});
+	}
+	
+	private int buscarQuestionById(String id) {
+		for (int i = 0; i < questions.size(); i++) {
+			if (questions.get(i).getId().equals(id)) {
+				return i;
+			}
+		}
+		return -1;
 	}
 
 	private void getCodeMeli() throws AuthorizationFailure, IOException, MeliException, ExecutionException, ParseException {
@@ -108,12 +153,12 @@ public class ControladorInicio extends SelectorComposer<Component> {
 	
 	private void prepareToSearchQuestions() throws MeliException, IOException, ExecutionException, ParseException {
 		params.clear(); 
-		params.add("access_token", sesion.sesion.getAttribute("accessToken").toString());
-		params.add("seller_id", sesion.sesion.getAttribute("id").toString());
+//		params.add("access_token", sesion.sesion.getAttribute("accessToken").toString());
+//		params.add("seller_id", sesion.sesion.getAttribute("id").toString());
 		
 		// Estas dos lineas son solo para modo TEST.
-//		params.add("seller_id", idUsuarioAux);
-//		params.add("access_token", tokenAux);
+		params.add("seller_id", idUsuarioAux);
+		params.add("access_token", tokenAux);
 		
 		params.add("status", validarPaginaActual() == 1 ? "UNANSWERED" : "ANSWERED");
 		createListQuestions(0, 0);
@@ -137,6 +182,7 @@ public class ControladorInicio extends SelectorComposer<Component> {
 		
 		Response response = m.get("/questions/search?", params);	
 
+		System.out.println( response );
 		if (response.getStatusCode() == 200) {
 			
 			if (validateSearchQuestions) {
@@ -184,6 +230,7 @@ public class ControladorInicio extends SelectorComposer<Component> {
 		} else {
 			
 			Response response = m.get("/users/" + q.getFrom().getId());		
+			System.out.println( response );
 			if (response.getStatusCode() == 200) {
 				
 				user = ParseJson.user(response.getResponseBody());
@@ -350,6 +397,29 @@ public class ControladorInicio extends SelectorComposer<Component> {
 		
 	}
 	
+	@Listen("onClick = #btnResponderMasivamente")
+	public void responderMasivamente() {
+		if (btnResponderMasivamente.getSclass().equals("btn btn-white")) {
+			showCheckInList(true);
+			btnResponderMasivamente.setSclass("btn btn-success");
+		} else {
+			showCheckInList(false);
+			btnResponderMasivamente.setSclass("btn btn-white");
+		}
+	}
+	
+	private void showCheckInList(boolean b) {
+		for (int i = 0; i < listQuestions.getChildren().size(); i++) {
+			Listitem listitem = (Listitem) listQuestions.getChildren().get(i);
+			Listcell listcell = (Listcell) listitem.getChildren().get(0);
+			Hbox hbox = (Hbox) listcell.getChildren().get(0);
+			Checkbox checkbox = (Checkbox) hbox.getChildren().get(0);
+			checkbox.setVisible(b);
+			if (b)
+				checkbox.setChecked(false);
+		}
+	}
+
 	@Listen("onClick = #btnFilterUsuario; onClick = #btnFilterPublicacion; onOK = #filterFecha; onChange = #filterFecha")
 	public void filter(Event e) {
 		if (e.getTarget() instanceof Button) {
@@ -424,15 +494,57 @@ public class ControladorInicio extends SelectorComposer<Component> {
 	
 	@Listen("onClick = #btnResponder")
 	public void responderPregunta() {
-		if (listQuestions.getSelectedIndex() == -1) {
-			ZkUtils.mensaje("Seleccione una pregunta", 1, null);
-		} else {
-			Question selected = listQuestions.getSelectedItem().getValue();
-			ArrayList<AnswerRequest> answerRequests = new ArrayList<AnswerRequest>();
-			answerRequests.add(new AnswerRequest(selected.getId(), selected.getSeller().getNickname()));
+		if (btnResponderMasivamente.getSclass().equals("btn btn-success")) {
+			if (validarCheckInList()) {
+				ArrayList<AnswerRequest> answerRequests = new ArrayList<AnswerRequest>();
+				for (Integer i : getCheckedsActive()) {
+					Question q = questions.get(i);
+					answerRequests.add(new AnswerRequest(i, q.getId(), q.getSeller().getNickname()));
+				}
+				ZkUtils.crearModal("meli/responder.zul", MeliUtils.arg(answerRequests));
+			} else {
+				ZkUtils.mensaje("Debe seleccionar al menos una pregunta.", 2, null);
+			}
 			
-			ZkUtils.crearModal("meli/responder.zul", MeliUtils.arg(answerRequests));			
+		} else {
+			if (listQuestions.getSelectedIndex() == -1) {
+				ZkUtils.mensaje("Seleccione una pregunta", 1, null);
+			} else {
+				Question selected = listQuestions.getSelectedItem().getValue();
+				ArrayList<AnswerRequest> answerRequests = new ArrayList<AnswerRequest>();
+				answerRequests.add(new AnswerRequest(1, selected.getId(), selected.getSeller().getNickname()));
+				
+				ZkUtils.crearModal("meli/responder.zul", MeliUtils.arg(answerRequests));	
+			}
 		}
+	}
+
+	private boolean validarCheckInList() {
+		for (int i = 0; i < listQuestions.getChildren().size(); i++) {
+			Listitem listitem = (Listitem) listQuestions.getChildren().get(i);
+			Listcell listcell = (Listcell) listitem.getChildren().get(0);
+			Hbox hbox = (Hbox) listcell.getChildren().get(0);
+			Checkbox checkbox = (Checkbox) hbox.getChildren().get(0);
+			System.out.println(checkbox.getId());
+			if (checkbox.isChecked())
+				return true;
+			else
+				continue;
+		}
+		return false;
+	}
+	
+	private List<Integer> getCheckedsActive() {
+		List<Integer> list = new ArrayList<>();
+		for (int i = 0; i < listQuestions.getChildren().size(); i++) {
+			Listitem listitem = (Listitem) listQuestions.getChildren().get(i);
+			Listcell listcell = (Listcell) listitem.getChildren().get(0);
+			Hbox hbox = (Hbox) listcell.getChildren().get(0);
+			Checkbox checkbox = (Checkbox) hbox.getChildren().get(0);
+			if (checkbox.isChecked())
+				list.add( Integer.valueOf( checkbox.getId() ) );
+		}
+		return list;
 	}
 
 }
