@@ -64,10 +64,12 @@
   - Cargar lista de Tags
   - Mostrar lista de Tags
   - Obtener id pregunta a responder
-  - Publicar respuesta (pendiente)
-  - Eliminar pregunta gestionada de listado de por gestionar (pendiente)
 #### September 20, 2017
   - Componente Typeahead
   - Visualizar Tags con @
 #### September 21, 2017
   - Publish / Subscribe Event
+  - Publicar respuesta
+  - Eliminar pregunta gestionada de listado de por gestionar
+  - Publicar masivamente (Difusión)
+  - Test Respuestas con caractertes en español

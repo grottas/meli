@@ -89,8 +89,8 @@ public class ResponderControlador extends SelectorComposer<Component> {
 				closeWin.setSclass(closeWin.getSclass() + " disabled");
 				
 				params.clear(); 
-//				params.add("access_token", sesion.sesion.getAttribute("accessToken").toString());
-				params.add("access_token", tokenAux);
+				params.add("access_token", sesion.sesion.getAttribute("accessToken").toString());
+//				params.add("access_token", tokenAux);
 				sendMessage(0);
 			} else {
 				ZkUtils.mensaje(Message.EmptyResponse, 1, null);

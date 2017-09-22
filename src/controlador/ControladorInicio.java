@@ -90,8 +90,8 @@ public class ControladorInicio extends SelectorComposer<Component> {
 	 public void doAfterCompose(Component comp) throws Exception, ExecutionException {
 		super.doAfterCompose(comp);
 		
-//		getCodeMeli();		
-		prepareToSearchQuestions();
+		getCodeMeli();		
+//		prepareToSearchQuestions();
 		eventQueue();
 	}
 
@@ -153,12 +153,12 @@ public class ControladorInicio extends SelectorComposer<Component> {
 	
 	private void prepareToSearchQuestions() throws MeliException, IOException, ExecutionException, ParseException {
 		params.clear(); 
-//		params.add("access_token", sesion.sesion.getAttribute("accessToken").toString());
-//		params.add("seller_id", sesion.sesion.getAttribute("id").toString());
+		params.add("access_token", sesion.sesion.getAttribute("accessToken").toString());
+		params.add("seller_id", sesion.sesion.getAttribute("id").toString());
 		
 		// Estas dos lineas son solo para modo TEST.
-		params.add("seller_id", idUsuarioAux);
-		params.add("access_token", tokenAux);
+//		params.add("seller_id", idUsuarioAux);
+//		params.add("access_token", tokenAux);
 		
 		params.add("status", validarPaginaActual() == 1 ? "UNANSWERED" : "ANSWERED");
 		createListQuestions(0, 0);
