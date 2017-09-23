@@ -18,4 +18,15 @@ public final class MeliUtils {
 		return arg;
 	}
 	
+	public static HashMap<String, Object> argDelete(String answerRequests) {
+		HashMap<String, Object> arg  = new  HashMap<String, Object>();		
+		arg.put("id", answerRequests);
+		return arg;
+	}
+	
+	public static HashMap<String, Object> argPlantilla(String answerRequests) {
+		HashMap<String, Object> arg  = new  HashMap<String, Object>();		
+		arg.put("texto", answerRequests);
+		return arg;
+	}
 }

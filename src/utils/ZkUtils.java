@@ -38,6 +38,12 @@ public final class ZkUtils {
 		Clients.showNotification(mensaje, t, com, null, 2000, true);
 	}
 	
+	public static void mensaje_short(String mensaje, int tipo, Component com) {
+		String t = (tipo == 1) ? "info" : 
+				   (tipo == 2) ? "warning" : "error";
+		Clients.showNotification(mensaje, t, com, null, 1000, true);
+	}
+	
 	public static void alerta(String mensaje, String titulo) {
 		Clients.alert(mensaje, titulo, null);
 	}

@@ -73,3 +73,12 @@
   - Eliminar pregunta gestionada de listado de por gestionar
   - Publicar masivamente (Difusión)
   - Test Respuestas con caractertes en español
+#### September 22, 2017
+  - Instalacion de PostgreSQL
+  - Integracion PostgreSQL a la app web
+  - Maquetado modal deletequestios
+  - Delete Questions
+  - Test deletequestions with meli
+  - Dao Plantilla - selectByUserId / inser / update
+  - Maquetado modal plantilla
+  - Guardar / Actualizar plantilla

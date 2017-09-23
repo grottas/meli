@@ -57,7 +57,7 @@ public class ResponderControlador extends SelectorComposer<Component> {
 	private FluentStringsMap params = new FluentStringsMap();
 	private Sesion sesion = new Sesion();
 	
-	private String tokenAux = "APP_USR-8051032385985753-092119-ea71ab4aaf53c925aaed9d2aa0b74a93__I_F__-268910416";
+	private String tokenAux = "APP_USR-8051032385985753-092221-2ab142346962e99d03f9a47dda237dc2__H_G__-268910416";
 
 	private void cargarTags() {
 		System.out.println("TAGS");
@@ -93,7 +93,7 @@ public class ResponderControlador extends SelectorComposer<Component> {
 //				params.add("access_token", tokenAux);
 				sendMessage(0);
 			} else {
-				ZkUtils.mensaje(Message.EmptyResponse, 1, null);
+				ZkUtils.campoRequerido(txtRespuesta);
 			}
 	}
 	
@@ -103,7 +103,6 @@ public class ResponderControlador extends SelectorComposer<Component> {
 		
 		Div div = (Div) answerRequests.getChildren().get(i);
 		Label id_questions = (Label) div.getChildren().get(1);
-		Label index = (Label) div.getChildren().get(2);
 		
 		String json = "{ question_id: " + id_questions.getValue() + ",text: \"" + txtRespuesta.getValue() + "\"}";
 		
@@ -126,7 +125,7 @@ public class ResponderControlador extends SelectorComposer<Component> {
 		if (i < answerRequests.getChildren().size())  {
 			sendMessage(i);
 		} else {
-			TimeUnit.SECONDS.sleep(2);
+			ZkUtils.mensaje(Message.ResponseSuceess, 1, win);
 			win.detach();
 		}
 	}

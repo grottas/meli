@@ -1,0 +1,26 @@
+<zk xmlns:n="xhtml" xmlns:w="client">
+	<window action="show: slideDown({duration: 300}); hide: slideUp({duration: 100})"
+		border="none" id="win" apply="ui.DeleteQuestionsController" style="width: 50%">
+		
+		<n:center>
+			<n:h2>Eliminar Pregunta</n:h2>
+			<label id="idQuestion" value="${arg.id}" visible="false"/>
+		</n:center>
+		<separator bar="true" spacing="5px"/>
+		
+		<vbox style="width: 100%">
+			<div style="margin: 5%;">
+				<label value="${ $composer.textDeleteQuestions() }"/>	
+			</div>
+			
+			<n:center>
+				<hbox>	
+					<n:button id="closeWin" class="btn btn-white" type="button">Cancelar</n:button>
+					<separator bar="false" spacing="20%"/>
+					<n:button id="btnDeleteSuceess" class="btn btn-primary" type="button">Eliminar</n:button>
+				</hbox>	
+			</n:center>
+		</vbox>
+		
+	</window>
+</zk>

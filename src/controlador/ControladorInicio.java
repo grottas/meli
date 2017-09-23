@@ -12,6 +12,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.regex.Pattern;
 
 import modelo.AnswerRequest;
+import modelo.Plantilla;
 import modelo.Producto;
 import modelo.Question;
 import modelo.User;
@@ -44,6 +45,7 @@ import plugin.Meli;
 import plugin.MeliException;
 import plugin.MeliUtils;
 import utils.EventQueuesUtils;
+import utils.Message;
 import utils.ParseJson;
 import utils.Sesion;
 import utils.ZkUtils;
@@ -55,6 +57,7 @@ import comparator.CompareQuestionsByDate;
 import comparator.CompareQuestionsByItem;
 import comparator.CompareQuestionsByReverseDate;
 import comparator.CompareQuestionsByUser;
+import dao.Bd;
 
 public class ControladorInicio extends SelectorComposer<Component> {
 	
@@ -76,6 +79,7 @@ public class ControladorInicio extends SelectorComposer<Component> {
 	private static Meli m = new Meli(MeliUtils.APP_ID, MeliUtils.Secret_Key);
 	private FluentStringsMap params = new FluentStringsMap();
 	private Sesion sesion = new Sesion();
+	private Bd bd = new Bd();
 	
 	private boolean validateSearchQuestions = true;
 	private int totalQuestions = 0;
@@ -83,7 +87,7 @@ public class ControladorInicio extends SelectorComposer<Component> {
 	private static Map<String, User> users = new HashMap<String, User>();
 	private static Map<String, Producto> products = new HashMap<String, Producto>();
 	
-	private String tokenAux = "APP_USR-8051032385985753-092119-ea71ab4aaf53c925aaed9d2aa0b74a93__I_F__-268910416";
+	private String tokenAux = "APP_USR-8051032385985753-092221-2ab142346962e99d03f9a47dda237dc2__H_G__-268910416";
 	private String idUsuarioAux = "268910416";
 	
 	@Override
@@ -120,7 +124,7 @@ public class ControladorInicio extends SelectorComposer<Component> {
 			}
 		});
 	}
-	
+
 	private int buscarQuestionById(String id) {
 		for (int i = 0; i < questions.size(); i++) {
 			if (questions.get(i).getId().equals(id)) {
@@ -508,7 +512,7 @@ public class ControladorInicio extends SelectorComposer<Component> {
 			
 		} else {
 			if (listQuestions.getSelectedIndex() == -1) {
-				ZkUtils.mensaje("Seleccione una pregunta", 1, null);
+				ZkUtils.mensaje(Message.NeedSelectQuestions, 2, null);
 			} else {
 				Question selected = listQuestions.getSelectedItem().getValue();
 				ArrayList<AnswerRequest> answerRequests = new ArrayList<AnswerRequest>();
@@ -545,6 +549,26 @@ public class ControladorInicio extends SelectorComposer<Component> {
 				list.add( Integer.valueOf( checkbox.getId() ) );
 		}
 		return list;
+	}
+	
+	@Listen("onClick = #btnEliminarPregunta")
+	public void deleteQuestion() throws MeliException {
+		if (listQuestions.getSelectedIndex() == -1) {
+			ZkUtils.mensaje(Message.NeedSelectQuestions, 2, null);
+		} else {
+			Question selected = listQuestions.getSelectedItem().getValue();
+			
+			ZkUtils.crearModal("meli/delete.zul", MeliUtils.argDelete( selected.getId() ));
+		}
+	}
+	
+	@Listen("onClick = #btnPlantilla")
+	public void showPlantilla() throws MeliException {	
+		String id = sesion.sesion.getAttribute("id").toString();
+//		String id = idUsuarioAux;
+		
+		Plantilla p = bd.plantillaSelectById(id);
+		ZkUtils.crearModal("meli/plantilla.zul", MeliUtils.argPlantilla( p == null ? "" : p.getText() ));
 	}
 
 }

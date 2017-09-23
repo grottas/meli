@@ -1,0 +1,26 @@
+<zk xmlns:n="xhtml" xmlns:w="client">
+	<window action="show: slideDown({duration: 300}); hide: slideUp({duration: 100})"
+		border="none" id="win" apply="ui.PlantillaControlador" style="width: 50%">
+		
+		<n:center>
+			<n:h2>Plantilla predeterminada de respuestas Mercadolibre</n:h2>
+		</n:center>
+		<separator bar="true" spacing="5px"/>
+		
+		<vbox style="width: 100%">
+			<div style="margin: 5%;">
+				<textbox id="txtPlantilla" value="${arg.texto}" maxlength="500" multiline="true" rows="5" style="resize: none;width:100%; padding: 0px;"/>	
+				<label id="contCaracteres"/>					
+			</div>
+			
+			<n:center>
+				<hbox>	
+					<n:button id="closeWin" class="btn btn-white" type="button">Cancelar</n:button>
+					<separator bar="false" spacing="20%"/>
+					<n:button id="btnPlantillaSuceess" class="btn btn-primary" type="button">Guardar</n:button>
+				</hbox>	
+			</n:center>
+		</vbox>
+		
+	</window>
+</zk>
