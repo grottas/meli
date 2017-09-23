@@ -82,3 +82,6 @@
   - Dao Plantilla - selectByUserId / inser / update
   - Maquetado modal plantilla
   - Guardar / Actualizar plantilla
+#### September 23, 2017
+  - Integracion plantilla en la respuesta.
+  

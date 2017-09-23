@@ -1,4 +1,6 @@
 <?page title="Index.zul"?>
+<!-- my timeout page -->
+<?page automaticTimeout="false"?>
 
 <!-- INSPINA http://webapplayers.com/inspinia_admin-v2.7/index.html -->
 

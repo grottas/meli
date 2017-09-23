@@ -45,10 +45,15 @@
 			  transition: left .2s ease-in-out;
 		}
 		input[type='checkbox']:first-of-type input[type=checkbox]:checked ~ label {
-		  	background-color: #4fbe79;
+		  	  background-color: #4fbe79;
 		}
 		input[type='checkbox']:first-of-type input[type=checkbox]:checked ~ label:after {
-		  	left: 1.7rem;
+		  	  left: 1.7rem;
+		}
+		/* Check diferent */
+		.check input[type='checkbox'] {
+			  width: min-content !important;
+			  margin-right: 5px;
 		}
 	</style>
 	<div id="wrapper" apply="controlador.ControladorInicio">

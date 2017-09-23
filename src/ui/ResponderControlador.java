@@ -1,23 +1,21 @@
 package ui;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
+import modelo.Plantilla;
 import modelo.Tag;
 
 import org.zkoss.zhtml.Button;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
-import org.zkoss.zk.ui.event.EventListener;
-import org.zkoss.zk.ui.event.EventQueue;
 import org.zkoss.zk.ui.event.EventQueues;
 import org.zkoss.zk.ui.event.InputEvent;
 import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.Wire;
+import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Div;
 import org.zkoss.zul.Hbox;
@@ -29,6 +27,8 @@ import org.zkoss.zul.Combobox;
 
 import com.ning.http.client.FluentStringsMap;
 import com.ning.http.client.Response;
+
+import dao.Bd;
 
 import plugin.Meli;
 import plugin.MeliException;
@@ -51,14 +51,17 @@ public class ResponderControlador extends SelectorComposer<Component> {
 	@Wire private Button btnResponderQuestion;
 	@Wire private Label labelProgress;
 	@Wire private Progressmeter progressmeter;
+	@Wire private Checkbox loadPlantilla;
 	
 	private List<Comboitem> combitos = new ArrayList<Comboitem>();
 	private static Meli m = new Meli(MeliUtils.APP_ID, MeliUtils.Secret_Key);
 	private FluentStringsMap params = new FluentStringsMap();
 	private Sesion sesion = new Sesion();
+	private Bd bd = new Bd();
 	
-	private String tokenAux = "APP_USR-8051032385985753-092221-2ab142346962e99d03f9a47dda237dc2__H_G__-268910416";
-
+	private String tokenAux = "APP_USR-8051032385985753-092314-967900ea35260de7be221172aa3ace82__D_F__-268910416";
+	private String idUsuarioAux = "268910416";
+	
 	private void cargarTags() {
 		System.out.println("TAGS");
 		combitos.clear();
@@ -89,8 +92,8 @@ public class ResponderControlador extends SelectorComposer<Component> {
 				closeWin.setSclass(closeWin.getSclass() + " disabled");
 				
 				params.clear(); 
-				params.add("access_token", sesion.sesion.getAttribute("accessToken").toString());
-//				params.add("access_token", tokenAux);
+//				params.add("access_token", sesion.sesion.getAttribute("accessToken").toString());
+				params.add("access_token", tokenAux);
 				sendMessage(0);
 			} else {
 				ZkUtils.campoRequerido(txtRespuesta);
@@ -145,16 +148,20 @@ public class ResponderControlador extends SelectorComposer<Component> {
 		Comboitem combito = comboRespuesta.getSelectedItem();
 		
 		String respOld = txtRespuesta.getValue();
-		String resp = respOld.replace( respOld.substring( respOld.lastIndexOf("@") ) , "");
-		txtRespuesta.setValue( resp + combito.getValue() );
+		String tag = respOld.substring(respOld.lastIndexOf("@"));
+		int tagPosition = respOld.lastIndexOf("@");
+		tag = tag.split(" ")[0];
+		String resp = respOld.replace( tag , "");
+		txtRespuesta.setValue( resp.substring(0, tagPosition) + combito.getValue() + resp.substring(tagPosition));
 		
 		comboRespuesta.setValue("");
 	}
 	
 	private boolean validarArroba(String value) {
 		if (value.length() > 0) {
-			String arroba = value.substring(value.length() - 1);
-			return arroba.equals("@");
+//			String arroba = value.substring(value.length() - 1);
+//			return arroba.equals("@");
+			return value.indexOf("@") != -1;
 		}
 		return false;
 	}
@@ -163,7 +170,11 @@ public class ResponderControlador extends SelectorComposer<Component> {
 		if (value.lastIndexOf("@") != -1) {
 			ZkUtils.removerTodo(comboRespuesta);
 			
-			String v = value.substring( value.lastIndexOf("@") );
+//			String v = value.substring( value.lastIndexOf("@") );
+			
+			String v = value.substring(value.lastIndexOf("@"));
+			v = v.split(" ")[0];
+			
 			Pattern p = Pattern.compile("(.*)" + v + "(.*)");
 			for (Comboitem combito : combitos) {
 				if (p.matcher( combito.getLabel() ).matches()) {
@@ -188,6 +199,27 @@ public class ResponderControlador extends SelectorComposer<Component> {
 		}
 		// Autocomplete Tags
 		autoCompletado(event.getValue());
+	}
+	
+	public boolean showPlantilla() {
+		String id = idUsuarioAux;
+//		String id = sesion.sesion.getAttribute("id").toString();
+		return bd.plantillaHasOne(id);
+	}
+	
+	@Listen("onCheck = #loadPlantilla")
+	public void checkCargarPlantilla() {
+		String id = idUsuarioAux;
+//		String id = sesion.sesion.getAttribute("id").toString();
 		
+		Plantilla p = bd.plantillaSelectById(id);
+		String txt = "";
+		
+		if (loadPlantilla.isChecked()) {
+			txt = txtRespuesta.getValue() + p.getText();
+		} else {
+			txt = txtRespuesta.getValue().trim().replace(p.getText(), "");
+		}
+		txtRespuesta.setValue(txt);
 	}
 }

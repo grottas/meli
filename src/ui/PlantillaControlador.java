@@ -59,8 +59,8 @@ public class PlantillaControlador  extends SelectorComposer<Component> {
 	public void addOrUpdatePlantilla() {
 		if (!txtPlantilla.getValue().isEmpty()) {
 
-			String id = sesion.sesion.getAttribute("id").toString();
-//			String id = idUsuarioAux;
+//			String id = sesion.sesion.getAttribute("id").toString();
+			String id = idUsuarioAux;
 
 			Plantilla p = new Plantilla(id, txtPlantilla.getValue());
 			if (bd.plantillaHasOne(id)) {

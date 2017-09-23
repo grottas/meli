@@ -15,10 +15,11 @@
 		
 		<separator bar="true" spacing="5px"/>
 		
+		<checkbox id="loadPlantilla" label=" Cargar plantilla de respuesta" zclass="check" style="margin-left: 5%;" visible="${ $composer.showPlantilla() }"/>
 		<vbox style="width: 100%">
 			<div style="margin: 5%;">
 				<combobox id="comboRespuesta" autocomplete="true" class="form-control input-sm" buttonVisible="false" vflex="1" style="padding: 0; width:98%; border: 1px solid transparent; position: relative;top: 32px;"/>		                
-				<textbox id="txtRespuesta" multiline="true" rows="5" style="resize: none;width:100%; padding: 0px;position: relative; bottom: 45px;"/>						
+				<textbox id="txtRespuesta" multiline="true" rows="5" onCreate="self.focus()" style="resize: none;width:100%; padding: 0px;position: relative; bottom: 45px;"/>						
 			</div>
 			
 			<n:center>

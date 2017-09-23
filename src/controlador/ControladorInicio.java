@@ -23,7 +23,6 @@ import org.zkoss.zhtml.I;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
-import org.zkoss.zk.ui.event.EventQueue;
 import org.zkoss.zk.ui.event.EventQueues;
 import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.Listen;
@@ -87,15 +86,15 @@ public class ControladorInicio extends SelectorComposer<Component> {
 	private static Map<String, User> users = new HashMap<String, User>();
 	private static Map<String, Producto> products = new HashMap<String, Producto>();
 	
-	private String tokenAux = "APP_USR-8051032385985753-092221-2ab142346962e99d03f9a47dda237dc2__H_G__-268910416";
+	private String tokenAux = "APP_USR-8051032385985753-092314-967900ea35260de7be221172aa3ace82__D_F__-268910416";
 	private String idUsuarioAux = "268910416";
 	
 	@Override
 	 public void doAfterCompose(Component comp) throws Exception, ExecutionException {
 		super.doAfterCompose(comp);
 		
-		getCodeMeli();		
-//		prepareToSearchQuestions();
+//		getCodeMeli();		
+		prepareToSearchQuestions();
 		eventQueue();
 	}
 
@@ -141,14 +140,18 @@ public class ControladorInicio extends SelectorComposer<Component> {
 			params.add("access_token", m.getAccessToken());
 			
 			Response response = m.get("/users/me?", params);
-			if (response.getStatusCode() == 200) {
-				UserCurrent usu = ParseJson.me(response.getResponseBody(), m.getAccessToken(),  m.getRefreshToken());
-				sesion.logIn(usu);		
-				
-				prepareToSearchQuestions();
+			if (response != null) {
+				if (response.getStatusCode() == 200) {
+					UserCurrent usu = ParseJson.me(response.getResponseBody(), m.getAccessToken(),  m.getRefreshToken());
+					sesion.logIn(usu);		
+					
+					prepareToSearchQuestions();
+				} else {
+					ZkUtils.problemasInternet();
+					return;
+				}	
 			} else {
 				ZkUtils.problemasInternet();
-				return;
 			}
 		} else {
 			prepareToSearchQuestions();
@@ -157,12 +160,12 @@ public class ControladorInicio extends SelectorComposer<Component> {
 	
 	private void prepareToSearchQuestions() throws MeliException, IOException, ExecutionException, ParseException {
 		params.clear(); 
-		params.add("access_token", sesion.sesion.getAttribute("accessToken").toString());
-		params.add("seller_id", sesion.sesion.getAttribute("id").toString());
+//		params.add("access_token", sesion.sesion.getAttribute("accessToken").toString());
+//		params.add("seller_id", sesion.sesion.getAttribute("id").toString());
 		
 		// Estas dos lineas son solo para modo TEST.
-//		params.add("seller_id", idUsuarioAux);
-//		params.add("access_token", tokenAux);
+		params.add("seller_id", idUsuarioAux);
+		params.add("access_token", tokenAux);
 		
 		params.add("status", validarPaginaActual() == 1 ? "UNANSWERED" : "ANSWERED");
 		createListQuestions(0, 0);
@@ -186,27 +189,29 @@ public class ControladorInicio extends SelectorComposer<Component> {
 		
 		Response response = m.get("/questions/search?", params);	
 
-		System.out.println( response );
-		if (response.getStatusCode() == 200) {
-			
-			if (validateSearchQuestions) {
-				validateSearchQuestions = !validateSearchQuestions;
-				totalQuestions = ParseJson.totalQuestions(response.getResponseBody());				
-			}
-
-			if (totalQuestions <= MeliUtils.LimitRequest) {
-				questions.addAll( ParseJson.questions(response.getResponseBody()) );
-				searchFrom(0);
+		if (response != null) {
+			if (response.getStatusCode() == 200) {
 				
+				if (validateSearchQuestions) {
+					validateSearchQuestions = !validateSearchQuestions;
+					totalQuestions = ParseJson.totalQuestions(response.getResponseBody());				
+				}
+	
+				if (totalQuestions <= MeliUtils.LimitRequest) {
+					questions.addAll( ParseJson.questions(response.getResponseBody()) );
+					searchFrom(0);
+					
+				} else {
+					questions.addAll( ParseJson.questions(response.getResponseBody()) );
+					totalQuestions -= MeliUtils.LimitRequest;
+					i++;	
+					createListQuestions(i * MeliUtils.LimitRequest, i);
+				}
 			} else {
-				questions.addAll( ParseJson.questions(response.getResponseBody()) );
-				totalQuestions -= MeliUtils.LimitRequest;
-				i++;	
-				createListQuestions(i * MeliUtils.LimitRequest, i);
+				ZkUtils.problemasInternet();
 			}
 		} else {
 			ZkUtils.problemasInternet();
-			return;
 		}	
 	}
 	
@@ -234,15 +239,18 @@ public class ControladorInicio extends SelectorComposer<Component> {
 		} else {
 			
 			Response response = m.get("/users/" + q.getFrom().getId());		
-			System.out.println( response );
-			if (response.getStatusCode() == 200) {
-				
-				user = ParseJson.user(response.getResponseBody());
-				users.put(q.getFrom().getId(), user);
-				q.setSeller(user);
-				questions.set(index, q);
-				
-				continueSearchFrom(index);
+			if (response != null) {
+				if (response.getStatusCode() == 200) {
+					
+					user = ParseJson.user(response.getResponseBody());
+					users.put(q.getFrom().getId(), user);
+					q.setSeller(user);
+					questions.set(index, q);
+					
+					continueSearchFrom(index);
+				}	
+			} else {
+				ZkUtils.problemasInternet();
 			}
 		}
 	}
@@ -267,15 +275,19 @@ public class ControladorInicio extends SelectorComposer<Component> {
 			
 			continueSearchItem(index);
 		} else {
-			Response response = m.get("/items/" + q.getItem_id());		
-			if (response.getStatusCode() == 200) {
-				
-				producto = ParseJson.item(response.getResponseBody());
-				products.put(q.getItem_id(), producto);
-				q.setItem(producto);
-				questions.set(index, q);
-				
-				continueSearchItem(index);
+			Response response = m.get("/items/" + q.getItem_id());	
+			if (response != null) {
+				if (response.getStatusCode() == 200) {
+					
+					producto = ParseJson.item(response.getResponseBody());
+					products.put(q.getItem_id(), producto);
+					q.setItem(producto);
+					questions.set(index, q);
+					
+					continueSearchItem(index);
+				}	
+			} else {
+				ZkUtils.problemasInternet();
 			}
 		}
 	}
@@ -564,8 +576,8 @@ public class ControladorInicio extends SelectorComposer<Component> {
 	
 	@Listen("onClick = #btnPlantilla")
 	public void showPlantilla() throws MeliException {	
-		String id = sesion.sesion.getAttribute("id").toString();
-//		String id = idUsuarioAux;
+//		String id = sesion.sesion.getAttribute("id").toString();
+		String id = idUsuarioAux;
 		
 		Plantilla p = bd.plantillaSelectById(id);
 		ZkUtils.crearModal("meli/plantilla.zul", MeliUtils.argPlantilla( p == null ? "" : p.getText() ));
