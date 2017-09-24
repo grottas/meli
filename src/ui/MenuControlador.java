@@ -2,9 +2,10 @@ package ui;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-//import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+
+import modelo.UserMeli;
 
 import org.zkoss.zhtml.Li;
 import org.zkoss.zhtml.Ul;
@@ -29,11 +30,24 @@ public class MenuControlador extends SelectorComposer<Component> {
 	@Override
 	public void doAfterCompose(Component comp) throws Exception {
 		super.doAfterCompose(comp);
-
+	
+		UserMeli u = sesion.getUserMeli();		
 		List<Menu> menu = new ArrayList<Menu>();
-		menu.add(new Menu("", 1, "fa fa-list-ul", "Gestión de Preguntas", Arrays.asList("Preguntas por Gestionar", "Preguntas Gestionadas") ));
-		menu.add(new Menu("", 0, "fa fa-sign-out", "Cerrar Sesión", null));
 		
+		// Admin
+		if (u.getRol().getId().equals("1")) {
+			menu.add(new Menu("admin/index.zul", 0, "fa fa-at", "Etiqueta", null));
+			menu.add(new Menu("admin/usuario.zul", 0, "fa fa-users", "Usuario", null));
+			
+//		// Vendedor
+		} else {
+			menu.add(new Menu("", 1, "fa fa-list-ul", "Gestión de Preguntas", Arrays.asList("Preguntas por Gestionar", "Preguntas Gestionadas") ));
+		
+			if (u.getSub_rol() == null) {
+				menu.add(new Menu("", 0, "fa fa-users", "Vendedores", null));
+			}			
+		}
+		menu.add(new Menu("", 0, "fa fa-sign-out", "Cerrar Sesión", null));
 		createmenu(menu);
 	}
 	
@@ -47,7 +61,13 @@ public class MenuControlador extends SelectorComposer<Component> {
 			arg.put("name", m.getName());
 			arg.put("child", m.getChild());
 			
-			Component component = Executions.createComponents("ui/menu_ul.zul", metismenu, arg);
+			Component component = null;
+			try {
+				component = Executions.createComponents("ui/menu_ul.zul", metismenu, arg);
+			} catch (Exception e) {
+				component = Executions.createComponents("../ui/menu_ul.zul", metismenu, arg);
+			}
+		
 			ZkUtils.crearComponente(component, this);
 		}
 	}

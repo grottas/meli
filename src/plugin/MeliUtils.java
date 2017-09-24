@@ -18,15 +18,29 @@ public final class MeliUtils {
 		return arg;
 	}
 	
-	public static HashMap<String, Object> argDelete(String answerRequests) {
+	public static HashMap<String, Object> argDelete(String answerRequests, String title, String controller) {
 		HashMap<String, Object> arg  = new  HashMap<String, Object>();		
 		arg.put("id", answerRequests);
+		arg.put("titulo", title);
+		arg.put("controller", controller);
 		return arg;
 	}
 	
 	public static HashMap<String, Object> argPlantilla(String answerRequests) {
 		HashMap<String, Object> arg  = new  HashMap<String, Object>();		
 		arg.put("texto", answerRequests);
+		return arg;
+	}
+	
+	public static HashMap<String, Object> argTag(String btnSuceess, String title, String id,
+												String nombre, String descripcion, String texto) {
+		HashMap<String, Object> arg  = new  HashMap<String, Object>();		
+		arg.put("btnSuccess", btnSuceess);
+		arg.put("title", title);
+		arg.put("id", id);
+		arg.put("nombde", nombre);
+		arg.put("descripcion", descripcion);
+		arg.put("texto", texto);
 		return arg;
 	}
 }

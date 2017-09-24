@@ -66,7 +66,7 @@ public class ResponderControlador extends SelectorComposer<Component> {
 		System.out.println("TAGS");
 		combitos.clear();
 		ZkUtils.removerTodo(comboRespuesta);
-		for (Tag tag : Tag.defaultTags()) {
+		for (Tag tag : bd.tagSelectAll()) {
 			Comboitem combito = new Comboitem( tag.getNombre() + " " + tag.getDescripcion() );
 			combito.setValue( tag.getTexto() );
 			comboRespuesta.appendChild(combito);
@@ -92,8 +92,8 @@ public class ResponderControlador extends SelectorComposer<Component> {
 				closeWin.setSclass(closeWin.getSclass() + " disabled");
 				
 				params.clear(); 
-//				params.add("access_token", sesion.sesion.getAttribute("accessToken").toString());
-				params.add("access_token", tokenAux);
+				params.add("access_token", sesion.sesion.getAttribute("accessToken").toString());
+//				params.add("access_token", tokenAux);
 				sendMessage(0);
 			} else {
 				ZkUtils.campoRequerido(txtRespuesta);
@@ -202,15 +202,15 @@ public class ResponderControlador extends SelectorComposer<Component> {
 	}
 	
 	public boolean showPlantilla() {
-		String id = idUsuarioAux;
-//		String id = sesion.sesion.getAttribute("id").toString();
+//		String id = idUsuarioAux;
+		String id = sesion.sesion.getAttribute("id").toString();
 		return bd.plantillaHasOne(id);
 	}
 	
 	@Listen("onCheck = #loadPlantilla")
 	public void checkCargarPlantilla() {
-		String id = idUsuarioAux;
-//		String id = sesion.sesion.getAttribute("id").toString();
+//		String id = idUsuarioAux;
+		String id = sesion.sesion.getAttribute("id").toString();
 		
 		Plantilla p = bd.plantillaSelectById(id);
 		String txt = "";

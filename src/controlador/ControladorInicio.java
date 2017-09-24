@@ -86,15 +86,15 @@ public class ControladorInicio extends SelectorComposer<Component> {
 	private static Map<String, User> users = new HashMap<String, User>();
 	private static Map<String, Producto> products = new HashMap<String, Producto>();
 	
-	private String tokenAux = "APP_USR-8051032385985753-092314-967900ea35260de7be221172aa3ace82__D_F__-268910416";
+	private String tokenAux = "APP_USR-8051032385985753-092320-823b3a9716a3d7f592a005a9387b1fe0__J_A__-268910416";
 	private String idUsuarioAux = "268910416";
 	
 	@Override
 	 public void doAfterCompose(Component comp) throws Exception, ExecutionException {
 		super.doAfterCompose(comp);
 		
-//		getCodeMeli();		
-		prepareToSearchQuestions();
+		getCodeMeli();		
+//		prepareToSearchQuestions();
 		eventQueue();
 	}
 
@@ -160,13 +160,13 @@ public class ControladorInicio extends SelectorComposer<Component> {
 	
 	private void prepareToSearchQuestions() throws MeliException, IOException, ExecutionException, ParseException {
 		params.clear(); 
-//		params.add("access_token", sesion.sesion.getAttribute("accessToken").toString());
-//		params.add("seller_id", sesion.sesion.getAttribute("id").toString());
+		params.add("access_token", sesion.sesion.getAttribute("accessToken").toString());
+		params.add("seller_id", sesion.sesion.getAttribute("id").toString());
 		
 		// Estas dos lineas son solo para modo TEST.
-		params.add("seller_id", idUsuarioAux);
-		params.add("access_token", tokenAux);
-		
+//		params.add("seller_id", idUsuarioAux);
+//		params.add("access_token", tokenAux);
+
 		params.add("status", validarPaginaActual() == 1 ? "UNANSWERED" : "ANSWERED");
 		createListQuestions(0, 0);
 	}
@@ -570,14 +570,16 @@ public class ControladorInicio extends SelectorComposer<Component> {
 		} else {
 			Question selected = listQuestions.getSelectedItem().getValue();
 			
-			ZkUtils.crearModal("meli/delete.zul", MeliUtils.argDelete( selected.getId() ));
+			ZkUtils.crearModal("meli/delete.zul", MeliUtils.argDelete( selected.getId(),
+																		"Eliminar Pregunta",
+																		"ui.DeleteQuestionsController"));
 		}
 	}
 	
 	@Listen("onClick = #btnPlantilla")
 	public void showPlantilla() throws MeliException {	
-//		String id = sesion.sesion.getAttribute("id").toString();
-		String id = idUsuarioAux;
+		String id = sesion.sesion.getAttribute("id").toString();
+//		String id = idUsuarioAux;
 		
 		Plantilla p = bd.plantillaSelectById(id);
 		ZkUtils.crearModal("meli/plantilla.zul", MeliUtils.argPlantilla( p == null ? "" : p.getText() ));

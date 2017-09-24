@@ -1,0 +1,31 @@
+<zk xmlns:n="xhtml">
+	<window action="show: slideDown({duration: 300}); hide: slideUp({duration: 100})"
+		border="none" id="win" apply="modal.TagController" style="width: 50%">
+		
+		<n:center>
+			<n:h2>${arg.title}</n:h2>
+			<label id="tipo" value="${arg.btnSuccess}" visible="false"/>
+			<label id="idTag" value="${arg.id}" visible="false"/>
+		</n:center>
+		<separator bar="true" spacing="5px"/>
+		
+		<vbox style="width: 100%">
+			<div style="margin: 5% 15%;">
+		    	<textbox id="txtEtiqueta" value="${arg.nombde}" type="text" class="form-control input-sm" placeholder="Nombre" style="margin-bottom: 10px;"/>
+
+		    	<textbox id="txtDescripcion" value="${arg.descripcion}" type="text" class="form-control input-sm" placeholder="Descripcion" style="margin-bottom: 10px;"/>
+			       	
+		       	<textbox id="txtTexto" value="${arg.texto}" type="text" multiline="true" class="form-control input-sm" placeholder="Texto" style="resize: none;"/>   
+			</div>
+			
+			<n:center>
+				<hbox>	
+					<n:button id="closeWin" class="btn btn-white" type="button">Cancelar</n:button>
+					<separator bar="false" spacing="20%"/>
+					<n:button id="btnSuccess" class="btn btn-primary" type="button">${arg.btnSuccess}</n:button>
+				</hbox>	
+			</n:center>
+		</vbox>
+		
+	</window>
+</zk>

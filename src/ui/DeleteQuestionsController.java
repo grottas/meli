@@ -23,7 +23,7 @@ import utils.Message;
 import utils.Sesion;
 import utils.ZkUtils;
 
-public class DeleteQuestionsController  extends SelectorComposer<Component> {
+public class DeleteQuestionsController extends SelectorComposer<Component> {
 
 	private static final long serialVersionUID = 1L;
 	@Wire private Window win;
@@ -47,8 +47,8 @@ public class DeleteQuestionsController  extends SelectorComposer<Component> {
 	@Listen("onClick = #btnDeleteSuceess")
 	public void delete() throws MeliException, IOException {
 		params.clear(); 
-//		params.add("access_token", sesion.sesion.getAttribute("accessToken").toString());
-		params.add("access_token", tokenAux);
+		params.add("access_token", sesion.sesion.getAttribute("accessToken").toString());
+//		params.add("access_token", tokenAux);
 		
 		String id = idQuestion.getValue();
 		

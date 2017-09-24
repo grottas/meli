@@ -21,13 +21,16 @@
 		    <n:div class="middle-box text-center loginscreen animated fadeInDown">
 		        <n:div>
 		            
+		            <n:h1 style="font-size: 100px;font-weight: 600;color: #23c6c8;text-shadow: 2px 0 0 #fff, -2px 0 0 #fff, 0 2px 0 #fff, 0 -2px 0 #fff, 1px 1px #fff, -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff;">
+		            	MELI
+		            </n:h1>
 		            <n:div class="widget-head-color-box lazur-bg p-lg text-center">
 	                	<n:div class="m-b-md">
 	                    	<image src="imagen/mercadolibre.png" style="width: 90%;"/>
 	                    </n:div>
 					</n:div>
 					<n:div class="widget-text-box">
-	                	<n:button id="meli" type="button" class="btn btn-w-m btn-info btn-block">MELI</n:button>   
+	                	<n:button id="meli" type="button" class="btn btn-w-m btn-info btn-block" style="font-weight: 600;">Iniciar</n:button>   
 	                </n:div>
 		            
 		        </n:div>

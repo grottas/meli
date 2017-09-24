@@ -83,5 +83,11 @@
   - Maquetado modal plantilla
   - Guardar / Actualizar plantilla
 #### September 23, 2017
+  - Bug insertar texto de @ en la respuesta 
   - Integracion plantilla en la respuesta.
-  
+  - Login interno
+  - Administracion de etiquetas - Crear / Editar / Eliminar
+  - Consumo de etiquetas en respuestas
+  - Administracion de usuarios - Eliminar
+  - Modelado en BD
+  - Modelo DAO por cada tabla

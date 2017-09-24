@@ -1,6 +1,7 @@
 package utils;
 
 import modelo.UserCurrent;
+import modelo.UserMeli;
 
 import org.zkoss.zk.ui.Session;
 import org.zkoss.zk.ui.Sessions;
@@ -30,6 +31,14 @@ public class Sesion {
 											sesion.getAttribute("accessToken").toString(),
 											sesion.getAttribute("refreshToken").toString());
     	return usu;
+	}
+	
+	public void saveUserMeli(UserMeli u) {
+		sesion.setAttribute("userMeli", u);
+	}
+	
+	public UserMeli getUserMeli() {
+		return (UserMeli) sesion.getAttribute("userMeli");
 	}
 
 }

@@ -1,5 +1,8 @@
 package utils;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -73,6 +76,10 @@ public final class ZkUtils {
 		mensaje(Message.ConexionProblems, 3, null);
 	}
 	
+	public static void oops() {
+		mensaje(Message.Oops, 3, null);
+	}
+	
 	public static String dateFormat(String date) {
 		return date.substring(8, 10) + "/" + date.substring(5, 7) + "/" + date.substring(0, 4) + " " + date.substring(11, date.indexOf("."));
 	}
@@ -80,5 +87,17 @@ public final class ZkUtils {
 	public static String priceFormat(double numero) {
         return df.format(numero);
     }
+	
+	public static String md5(String c) {
+		try {
+			MessageDigest md = MessageDigest.getInstance("MD5");
+			
+			 byte[] md5sum = md.digest(c.getBytes());
+			 return String.format("%032X", new BigInteger(1, md5sum));
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 	
 }

@@ -1,9 +1,9 @@
-<zk xmlns:n="xhtml" xmlns:w="client">
+<zk xmlns:n="xhtml">
 	<window action="show: slideDown({duration: 300}); hide: slideUp({duration: 100})"
-		border="none" id="win" apply="ui.DeleteQuestionsController" style="width: 50%">
+		border="none" id="win" apply="${arg.controller}" style="width: 50%">
 		
 		<n:center>
-			<n:h2>Eliminar Pregunta</n:h2>
+			<n:h2>${arg.titulo}</n:h2>
 			<label id="idQuestion" value="${arg.id}" visible="false"/>
 		</n:center>
 		<separator bar="true" spacing="5px"/>

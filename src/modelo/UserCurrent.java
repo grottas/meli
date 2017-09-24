@@ -56,5 +56,5 @@ public class UserCurrent {
 	public void setRefreshToken(String refreshToken) {
 		this.refreshToken = refreshToken;
 	}
-
+	
 }

@@ -1,0 +1,87 @@
+<?page title="Usuarios" contentType="text/html;charset=UTF-8"?>
+
+<?link rel="stylesheet" type="text/css" href="/assets/bootstrap-3.3.7/css/bootstrap.min.css" ?>
+<?link rel="stylesheet" type="text/css" href="/assets/font-awesome-4.7.0/css/font-awesome.min.css" ?>
+<?link rel="stylesheet" type="text/css" href="/assets/inspinia-2.7.1/css/animate.css" ?>
+<?link rel="stylesheet" type="text/css" href="/assets/inspinia-2.7.1/css/style.css" ?>
+<?link rel="stylesheet" type="text/css" href="/assets/zk-ui/navbar.css" ?>
+
+<!-- Mainly scripts -->
+<?script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"?>
+<?script type="text/javascript" src="/assets/bootstrap-3.3.7/js/bootstrap.min.js"?>
+<?script type="text/javascript" src="/assets/inspinia-2.7.1/js/jquery.metisMenu.js"?>
+<?script type="text/javascript" src="/assets/inspinia-2.7.1/js/jquery.slimscroll.min.js"?>
+ <!-- Custom and plugin javascript -->
+<?script type="text/javascript" src="/assets/inspinia-2.7.1/js/inspinia.js"?>
+<?script type="text/javascript" src="/assets/inspinia-2.7.1/js/pace.min.js"?>
+
+<zk xmlns:n="xhtml">
+	<div id="wrapper" apply="controlador.AdminUsuarioController">
+	<include src="../ui/menu.zul"/>
+		
+		
+        <n:div id="page-wrapper" class="gray-bg">
+        	<div class="row border-bottom"></div>
+        	<div class="row wrapper border-bottom white-bg page-heading">
+        		<div class="col-lg-11 col-sm-10">
+        			<n:h2>Administración de Usuarios</n:h2>
+        		</div>
+        	</div>
+        	<div class="wrapper wrapper-content">
+        		<div class="text-center animated fadeInRightBig">
+        			<div class="row">
+<!-- ACCIONES -->                    
+                    	<div class="col-xs-12 col-sm-6 col-md-4" style="text-align: left;">
+                    		<n:p>Acciones</n:p>
+                    		<div class="btn-group">
+			                    <n:button id="btnNuevo" class="btn btn-white" type="button">Nuevo</n:button>
+			                	<n:button id="btnEditar" class="btn btn-info" type="button">Editar</n:button>
+			                    <n:button id="btnEliminar" class="btn btn-danger" type="button">Eliminar</n:button>
+			                </div>
+                    	</div>
+                    </div>
+
+					<listbox id="listUsuarios" emptyMessage="No hay usuarios para mostrar.">
+						<listhead sizable="true">
+							<listheader label="ID ML" align="center" sort="auto"/>
+							<listheader label="Nombre" align="center"/>
+							<listheader label="Email" align="center"/>
+							<listheader label="Rol" align="center"/>
+							<listheader label="SubRol" align="center"/>
+						</listhead>
+						<template name="model">
+							<listitem>
+							
+								<listcell>
+									<label value="${each.id_meli}"/>
+								</listcell>
+								<listcell>
+									<label value="${each.nombre}"/>
+								</listcell>
+								<listcell>
+									<label value="${each.email}"/>
+								</listcell>
+								<listcell>
+									<label value="${each.rol.descripcion}"/>
+								</listcell>
+								<listcell>
+									<label value="${each.sub_rol == null ? '' : each.sub_rol.descripcion}"/>
+								</listcell>
+								
+							</listitem>	
+						</template>
+					</listbox>                    
+
+                </div>
+            </div>
+            <div class="footer">				
+                <div class="pull-right">
+                	<label value="Versión ${desktop.webApp.version}"/>
+                </div>
+                <div>
+                    <label>ZK</label> Septiembre, 2017
+                </div>
+            </div>  
+        </n:div>
+	</div>
+</zk>
