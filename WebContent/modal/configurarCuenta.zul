@@ -1,0 +1,28 @@
+<zk xmlns:n="xhtml">
+	<window action="show: slideDown({duration: 300}); hide: slideUp({duration: 100})"
+		border="none" id="win" apply="modal.ConfigurarCuentaController" style="width: 50%">
+		
+		<n:center>
+			<n:h2>Configurar Cuenta</n:h2>
+		</n:center>
+		<separator bar="true" spacing="5px"/>
+		
+		<vbox style="width: 100%">
+			<div style="margin: 5% 15%;">
+		    	<textbox id="txtEmail" type="text" class="form-control input-sm" placeholder="Ingrese su email" style="margin-bottom: 10px;"/>
+			       	
+		       	<textbox id="txtClave" type="password" class="form-control input-sm" placeholder="Nueva clave" style="margin-bottom: 10px;"/>   
+				<textbox id="txtReClave" type="password" class="form-control input-sm" placeholder="Repita la clave" />   
+			</div>
+			
+			<n:center>
+				<hbox>	
+					<n:button id="closeWin" class="btn btn-white" type="button">Cancelar</n:button>
+					<separator bar="false" spacing="20%"/>
+					<n:button id="btnSuccess" class="btn btn-primary" type="button">Guardar</n:button>
+				</hbox>	
+			</n:center>
+		</vbox>
+		
+	</window>
+</zk>

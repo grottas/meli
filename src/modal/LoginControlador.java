@@ -1,7 +1,5 @@
 package modal;
 
-import modelo.Rol;
-import modelo.SubRol;
 import modelo.UserMeli;
 
 import org.zkoss.zhtml.Button;
@@ -41,14 +39,7 @@ public class LoginControlador extends SelectorComposer<Component> {
 	}
 	
 	@Listen("onOK = #txtUsuario")
-	public void okUsuario() {
-//		Rol r = new Rol("2", "");
-//		SubRol s = new SubRol("0", "", "");
-//		String clave = ZkUtils.md5("1234");
-//		UserMeli u = new UserMeli("", "268910416", "CIACAPPLICATIONS", "usuario@usuario.com", clave, r, s);
-//		bd.userInsert(u);
-//		System.out.println("Suceess");
-		
+	public void okUsuario() {	
 		if (txtUsuario.getValue().isEmpty())
 			ZkUtils.campoRequerido(txtUsuario);
 		else if (InputUtils.validateEmail(txtUsuario.getValue()))

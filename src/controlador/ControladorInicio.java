@@ -17,9 +17,11 @@ import modelo.Producto;
 import modelo.Question;
 import modelo.User;
 import modelo.UserCurrent;
+import modelo.UserMeli;
 
 import org.zkoss.zhtml.Button;
 import org.zkoss.zhtml.I;
+import org.zkoss.zhtml.Messagebox;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
@@ -70,6 +72,8 @@ public class ControladorInicio extends SelectorComposer<Component> {
 	@Wire private Datebox filterFecha;
 	@Wire private I iconFecha;
 	@Wire private Button btnResponderMasivamente;
+	@Wire private Button btnResponder;
+	@Wire private Button btnEliminarPregunta;
 	
 	@Wire private Div filterUsuarioContent;	
 	@Wire private Div filterPublicacionContent;
@@ -86,16 +90,17 @@ public class ControladorInicio extends SelectorComposer<Component> {
 	private static Map<String, User> users = new HashMap<String, User>();
 	private static Map<String, Producto> products = new HashMap<String, Producto>();
 	
-	private String tokenAux = "APP_USR-8051032385985753-092320-823b3a9716a3d7f592a005a9387b1fe0__J_A__-268910416";
-	private String idUsuarioAux = "268910416";
-	
 	@Override
 	 public void doAfterCompose(Component comp) throws Exception, ExecutionException {
 		super.doAfterCompose(comp);
 		
 		getCodeMeli();		
-//		prepareToSearchQuestions();
 		eventQueue();
+		
+		
+//		sesion.test();
+//		prepareToSearchQuestions();		
+		
 	}
 
 	private void eventQueue() {
@@ -143,6 +148,12 @@ public class ControladorInicio extends SelectorComposer<Component> {
 			if (response != null) {
 				if (response.getStatusCode() == 200) {
 					UserCurrent usu = ParseJson.me(response.getResponseBody(), m.getAccessToken(),  m.getRefreshToken());
+					
+					if (!usu.getId().equals(sesion.getUserMeli().getId_meli())) {
+						errorId();
+						return;
+					}
+					
 					sesion.logIn(usu);		
 					
 					prepareToSearchQuestions();
@@ -158,14 +169,26 @@ public class ControladorInicio extends SelectorComposer<Component> {
 		}
 	}
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	private void errorId() {		
+		Messagebox.show(Message.InvalideIdMeliWithIdML, 
+			    "Ops, ingresaste con una cuenta de ML que no es tuya!", Messagebox.OK,
+			    Messagebox.NONE,
+			        new org.zkoss.zk.ui.event.EventListener(){
+			            public void onEvent(Event e){
+			                if(Messagebox.ON_OK.equals(e.getName()) 
+			                		|| "onClose".equals(e.getName())) {
+			                	sesion.cerrarSesion();
+			                	ZkUtils.redireccion("https://www.mercadolibre.com/");
+			                }
+			            }
+			        });    
+	}
+	
 	private void prepareToSearchQuestions() throws MeliException, IOException, ExecutionException, ParseException {
 		params.clear(); 
 		params.add("access_token", sesion.sesion.getAttribute("accessToken").toString());
 		params.add("seller_id", sesion.sesion.getAttribute("id").toString());
-		
-		// Estas dos lineas son solo para modo TEST.
-//		params.add("seller_id", idUsuarioAux);
-//		params.add("access_token", tokenAux);
 
 		params.add("status", validarPaginaActual() == 1 ? "UNANSWERED" : "ANSWERED");
 		createListQuestions(0, 0);
@@ -415,12 +438,16 @@ public class ControladorInicio extends SelectorComposer<Component> {
 	
 	@Listen("onClick = #btnResponderMasivamente")
 	public void responderMasivamente() {
-		if (btnResponderMasivamente.getSclass().equals("btn btn-white")) {
-			showCheckInList(true);
-			btnResponderMasivamente.setSclass("btn btn-success");
+		if (validatePermisoResponder()) {
+			if (btnResponderMasivamente.getSclass().equals("btn btn-white")) {
+				showCheckInList(true);
+				btnResponderMasivamente.setSclass("btn btn-success");
+			} else {
+				showCheckInList(false);
+				btnResponderMasivamente.setSclass("btn btn-white");
+			}
 		} else {
-			showCheckInList(false);
-			btnResponderMasivamente.setSclass("btn btn-white");
+			ZkUtils.mensaje_short(Message.RolAccess, 3, btnResponderMasivamente);
 		}
 	}
 	
@@ -510,28 +537,32 @@ public class ControladorInicio extends SelectorComposer<Component> {
 	
 	@Listen("onClick = #btnResponder")
 	public void responderPregunta() {
-		if (btnResponderMasivamente.getSclass().equals("btn btn-success")) {
-			if (validarCheckInList()) {
-				ArrayList<AnswerRequest> answerRequests = new ArrayList<AnswerRequest>();
-				for (Integer i : getCheckedsActive()) {
-					Question q = questions.get(i);
-					answerRequests.add(new AnswerRequest(i, q.getId(), q.getSeller().getNickname()));
+		if (validatePermisoResponder()) {
+			if (btnResponderMasivamente.getSclass().equals("btn btn-success")) {
+				if (validarCheckInList()) {
+					ArrayList<AnswerRequest> answerRequests = new ArrayList<AnswerRequest>();
+					for (Integer i : getCheckedsActive()) {
+						Question q = questions.get(i);
+						answerRequests.add(new AnswerRequest(i, q.getId(), q.getSeller().getNickname()));
+					}
+					ZkUtils.crearModal("meli/responder.zul", MeliUtils.arg(answerRequests));
+				} else {
+					ZkUtils.mensaje("Debe seleccionar al menos una pregunta.", 2, null);
 				}
-				ZkUtils.crearModal("meli/responder.zul", MeliUtils.arg(answerRequests));
-			} else {
-				ZkUtils.mensaje("Debe seleccionar al menos una pregunta.", 2, null);
-			}
-			
-		} else {
-			if (listQuestions.getSelectedIndex() == -1) {
-				ZkUtils.mensaje(Message.NeedSelectQuestions, 2, null);
-			} else {
-				Question selected = listQuestions.getSelectedItem().getValue();
-				ArrayList<AnswerRequest> answerRequests = new ArrayList<AnswerRequest>();
-				answerRequests.add(new AnswerRequest(1, selected.getId(), selected.getSeller().getNickname()));
 				
-				ZkUtils.crearModal("meli/responder.zul", MeliUtils.arg(answerRequests));	
-			}
+			} else {
+				if (listQuestions.getSelectedIndex() == -1) {
+					ZkUtils.mensaje(Message.NeedSelectQuestions, 2, null);
+				} else {
+					Question selected = listQuestions.getSelectedItem().getValue();
+					ArrayList<AnswerRequest> answerRequests = new ArrayList<AnswerRequest>();
+					answerRequests.add(new AnswerRequest(1, selected.getId(), selected.getSeller().getNickname()));
+					
+					ZkUtils.crearModal("meli/responder.zul", MeliUtils.arg(answerRequests));	
+				}
+			}	
+		} else {
+			ZkUtils.mensaje_short(Message.RolAccess, 3, btnResponder);
 		}
 	}
 
@@ -565,14 +596,18 @@ public class ControladorInicio extends SelectorComposer<Component> {
 	
 	@Listen("onClick = #btnEliminarPregunta")
 	public void deleteQuestion() throws MeliException {
-		if (listQuestions.getSelectedIndex() == -1) {
-			ZkUtils.mensaje(Message.NeedSelectQuestions, 2, null);
+		if (validatePermisoEliminar()) {
+			if (listQuestions.getSelectedIndex() == -1) {
+				ZkUtils.mensaje(Message.NeedSelectQuestions, 2, null);
+			} else {
+				Question selected = listQuestions.getSelectedItem().getValue();
+				
+				ZkUtils.crearModal("meli/delete.zul", MeliUtils.argDelete( selected.getId(),
+																			"Eliminar Pregunta",
+																			"ui.DeleteQuestionsController"));
+			}	
 		} else {
-			Question selected = listQuestions.getSelectedItem().getValue();
-			
-			ZkUtils.crearModal("meli/delete.zul", MeliUtils.argDelete( selected.getId(),
-																		"Eliminar Pregunta",
-																		"ui.DeleteQuestionsController"));
+			ZkUtils.mensaje_short(Message.RolAccess, 3, btnEliminarPregunta);
 		}
 	}
 	
@@ -583,6 +618,26 @@ public class ControladorInicio extends SelectorComposer<Component> {
 		
 		Plantilla p = bd.plantillaSelectById(id);
 		ZkUtils.crearModal("meli/plantilla.zul", MeliUtils.argPlantilla( p == null ? "" : p.getText() ));
+	}
+	
+	private boolean validatePermisoResponder() {
+		return permisos("1");
+	}
+	
+	private boolean validatePermisoEliminar() {
+		return permisos("2");
+	}
+	
+	private boolean permisos(String p) {
+		UserMeli u = sesion.getUserMeli();
+		// Vendedor, tiene total acceso
+		if (u.getRol() == null) {
+			return true;
+			
+			// Verificamos el rol del subVendedor
+		} else {
+			return bd.permisoRolAccess(u.getSub_rol().getId(), p);
+		}
 	}
 
 }

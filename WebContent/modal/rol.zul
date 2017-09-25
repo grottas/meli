@@ -1,0 +1,58 @@
+<zk xmlns:n="xhtml">
+	<window action="show: slideDown({duration: 300}); hide: slideUp({duration: 100})"
+		border="none" id="win" apply="modal.RolController" style="width: 50%">
+		
+		<n:center>
+			<n:h2>${arg.title}</n:h2>
+			<label id="tipo" value="${arg.btnSuccess}" visible="false"/>
+			<label id="id" value="${arg.rol.id}" visible="false"/>
+		</n:center>
+		<separator bar="true" spacing="5px"/>
+		
+		<vbox style="width: 100%">
+			<div style="margin: 5% 15%;">
+		    	<textbox id="txtNombre" value="${arg.rol.descripcion}" type="text" class="form-control input-sm" placeholder="Descripcion" style="margin-bottom: 10px;"/>
+
+			    <div class="row">
+			    	<div class="col-xs-12 col-sm-6">
+			    		<div class="row" style="margin-bottom: 10px;">
+			    			<label value="Gestionar Preguntas y Respuestas" style="font-weight: 600;margin-bottom: 10px;"/>
+			    		</div>
+			    		<div class="row">
+			    			<checkbox id="check1" value="1" label="Responder pregunta"/>
+			    		</div>
+			    		<div class="row">
+			    			<checkbox id="check2" value="2" label="Eliminar pregunta"/>
+			    		</div>
+			    	</div>
+			    	<div class="col-xs-12 col-sm-6">
+			    		<div class="row" style="margin-bottom: 10px;">
+			    		<label value="Generar Reportes de Atención al Cliente" style="font-weight: 600;"/>
+			    		</div>
+			    		<div class="row">
+			    			<checkbox id="check3" value="3" label="Usuario"/>
+			    		</div>
+			    		<div class="row">
+			    			<checkbox id="check4" value="4" label="Publicaciones"/>
+			    		</div>
+			    		<div class="row">
+			    			<checkbox id="check5" value="5" label="Preguntas"/>
+			    		</div>
+			    		<div class="row">
+			    			<checkbox id="check6" value="6" label="Respuestas"/>
+			    		</div>
+			    	</div>
+			    </div>   	
+			</div>
+			
+			<n:center>
+				<hbox>	
+					<n:button id="closeWin" class="btn btn-white" type="button">Cancelar</n:button>
+					<separator bar="false" spacing="20%"/>
+					<n:button id="btnSuccess" class="btn btn-primary" type="button">${arg.btnSuccess}</n:button>
+				</hbox>	
+			</n:center>
+		</vbox>
+		
+	</window>
+</zk>

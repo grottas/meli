@@ -31,23 +31,24 @@
         		<div class="text-center animated fadeInRightBig">
         			<div class="row">
 <!-- ACCIONES -->                    
-                    	<div class="col-xs-12 col-sm-6 col-md-4" style="text-align: left;">
+                    	<div class="col-xs-12 col-sm-12 col-md-12" style="text-align: left;">
                     		<n:p>Acciones</n:p>
                     		<div class="btn-group">
 			                    <n:button id="btnNuevo" class="btn btn-white" type="button">Nuevo</n:button>
 			                	<n:button id="btnEditar" class="btn btn-info" type="button">Editar</n:button>
 			                    <n:button id="btnEliminar" class="btn btn-danger" type="button">Eliminar</n:button>
 			                </div>
+			                <n:button id="btnDetalle" class="btn btn-white" type="button" style="float: right;"><n:i class="fa fa-info"></n:i></n:button>
                     	</div>
                     </div>
 
-					<listbox id="listUsuarios" emptyMessage="No hay usuarios para mostrar.">
-						<listhead sizable="true">
+					<listbox id="listUsuarios" mold="paging" pageSize="10"  pagingPosition="top"
+					emptyMessage="No hay usuarios para mostrar.">
+						<listhead>
 							<listheader label="ID ML" align="center" sort="auto"/>
 							<listheader label="Nombre" align="center"/>
 							<listheader label="Email" align="center"/>
 							<listheader label="Rol" align="center"/>
-							<listheader label="SubRol" align="center"/>
 						</listhead>
 						<template name="model">
 							<listitem>
@@ -63,9 +64,6 @@
 								</listcell>
 								<listcell>
 									<label value="${each.rol.descripcion}"/>
-								</listcell>
-								<listcell>
-									<label value="${each.sub_rol == null ? '' : each.sub_rol.descripcion}"/>
 								</listcell>
 								
 							</listitem>	

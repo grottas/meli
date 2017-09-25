@@ -28,7 +28,6 @@ public class PlantillaControlador  extends SelectorComposer<Component> {
 	private Bd bd = new Bd();
 	
 	private int limit = 500;
-	private String idUsuarioAux = "268910416";
 	
 	@Listen("onClick = #closeWin")
 	public void closeWindow() {
@@ -59,8 +58,7 @@ public class PlantillaControlador  extends SelectorComposer<Component> {
 	public void addOrUpdatePlantilla() {
 		if (!txtPlantilla.getValue().isEmpty()) {
 
-//			String id = sesion.sesion.getAttribute("id").toString();
-			String id = idUsuarioAux;
+			String id = sesion.sesion.getAttribute("id").toString();
 
 			Plantilla p = new Plantilla(id, txtPlantilla.getValue());
 			if (bd.plantillaHasOne(id)) {

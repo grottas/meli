@@ -41,7 +41,8 @@
                     	</div>
                     </div>
 
-					<listbox id="listTags" emptyMessage="No hay etiquetas para mostrar.">
+					<listbox id="listTags" mold="paging" pageSize="10"  pagingPosition="top"
+					 emptyMessage="No hay etiquetas para mostrar.">
 						<listhead sizable="true">
 							<listheader label="Nombre" align="center"/>
 							<listheader label="Descripción" align="center"/>

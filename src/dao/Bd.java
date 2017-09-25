@@ -3,8 +3,12 @@ package dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import modelo.Permiso;
 import modelo.Plantilla;
 import modelo.Rol;
+import modelo.SitesMl;
+import modelo.SubRol;
+import modelo.SubRolPermiso;
 import modelo.Tag;
 import modelo.UserMeli;
 
@@ -14,6 +18,10 @@ public class Bd {
 	private RolDAO rolDAO = new RolDAO();
 	private UserMeliDAO userMeliDAO = new UserMeliDAO();
 	private TagDAO tagDAO = new TagDAO();
+	private SitesMlDAO sitesMlDAO = new SitesMlDAO();
+	private PermisoDAO permisoDAO = new PermisoDAO();
+	private SubRolPermisoDAO subRolPermisoDAO = new SubRolPermisoDAO();
+	private SubRolDAO subRolDAO = new SubRolDAO();
 	
 	public Plantilla plantillaSelectById(String id) {
 		return plantillaDAO.selectById(id);
@@ -47,8 +55,12 @@ public class Bd {
 		return userMeliDAO.selectAll();
 	}
 	
-	public ArrayList<UserMeli> selectVendedores() {
+	public ArrayList<UserMeli> userSelectVendedores() {
 		return userMeliDAO.selectVendedores();
+	}
+	
+	public ArrayList<UserMeli> userSelectSubVendedores(String id_meli) {
+		return userMeliDAO.selectSubVendedores(id_meli);
 	}
 	
 	public UserMeli userSelectByEmailAndClave(String email, String clave) {
@@ -57,6 +69,14 @@ public class Bd {
 	
 	public UserMeli userSelectById(String id) {
 		return userMeliDAO.selectById(id);
+	}
+	
+	public UserMeli userSelectByIdMeli(String id_meli) {
+		return userMeliDAO.selectByIdMeli(id_meli);
+	}
+	
+	public boolean userCodeMeliIsUsed(String id_meli) {
+		return userMeliDAO.codeMeliIsUsed(id_meli);
 	}
 	
 	public void userUpdate(UserMeli u) {
@@ -89,6 +109,74 @@ public class Bd {
 	
 	public void tagDelete(Tag t) {
 		tagDAO.delete(t);
+	}
+	
+	public List<SitesMl> sitesSelectAll() {
+		return sitesMlDAO.selectAll();
+	}
+	
+	public Permiso permisoSelectById(String id) {
+		return permisoDAO.selectById(id);
+	}
+	
+	public void permisoUpdate(Permiso p) {
+		permisoDAO.update(p);
+	}
+	
+	public void permisoInsert(Permiso p) {
+		permisoDAO.insert(p);
+	}
+	
+	public List<SubRolPermiso> permisoRolSelectBySubRolId(String sub_rol_id) {
+		return subRolPermisoDAO.selectBySubRolId(sub_rol_id);
+	}
+	
+	public SubRolPermiso permisoSelectBySubRolAndPermisionId(String sub_rol_id, String permiso_id) {
+		return subRolPermisoDAO.selectBySubRolAndPermisionId(sub_rol_id, permiso_id);
+	}
+	
+	public boolean permisoRolAccess(String sub_rol_id, String permiso_id) {
+		return subRolPermisoDAO.rolAccess(sub_rol_id, permiso_id);
+	}
+	
+	public void permisoRolUpdate(SubRolPermiso p) {
+		subRolPermisoDAO.update(p);
+	}
+	
+	public void permisoRolInsert(SubRolPermiso p) {
+		subRolPermisoDAO.insert(p);
+	}
+	
+	public void permisoRolDelete(SubRolPermiso p) {
+		subRolPermisoDAO.delete(p);
+	}
+	
+	public List<SubRol> subRolSelectByIdMeli(String id_meli) {
+		return subRolDAO.selectByIdMeli(id_meli);
+	}
+	
+	public SubRol subRolSelectById(String id) {
+		return subRolDAO.selectById(id);
+	}
+	
+	public SubRol subRolSelectByDescMeliID(SubRol r) {
+		return subRolDAO.selectByDescMeliID(r);
+	}
+	
+	public void subRolUpdate(SubRol r) {
+		subRolDAO.update(r);
+	}
+	
+	public void subRolInsert(SubRol r) {
+		subRolDAO.insert(r);
+	}
+	
+	public void subRolDelete(SubRol r) {
+		subRolDAO.delete(r);
+	}
+	
+	public void subRoleleteOnlyBridge(SubRol r) {
+		subRolDAO.deleteOnlyBridge(r);
 	}
 	
 }

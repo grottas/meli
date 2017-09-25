@@ -20,6 +20,17 @@ import com.google.gson.JsonParser;
 
 public final class ParseJson {
 	
+	public static String searchIdMeli(String json) {
+		System.out.println(json);
+		if (json.contains("seller")) {
+			JsonObject obj = stringToJsonObject(json);
+			JsonElement element = obj.get("seller");
+			return buscarJson(element, "id");	
+		} else {
+			return "";
+		}
+	}
+	
 	public static Producto item(String json) throws IOException {
 		System.out.println(json);
 			

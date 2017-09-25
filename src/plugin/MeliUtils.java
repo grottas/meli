@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import modelo.AnswerRequest;
+import modelo.SubRol;
+import modelo.UserMeli;
 
 public final class MeliUtils {
 
@@ -43,4 +45,30 @@ public final class MeliUtils {
 		arg.put("texto", texto);
 		return arg;
 	}
+	
+	public static HashMap<String, Object> argUsuario(String btnSuceess, String title, UserMeli u) {
+		HashMap<String, Object> arg  = new  HashMap<String, Object>();		
+		arg.put("btnSuccess", btnSuceess);
+		arg.put("title", title);
+		arg.put("id", u.getId());
+		arg.put("nombre", u.getNombre());
+		arg.put("idMeli", u.getId_meli());
+		arg.put("email", u.getEmail());
+		return arg;
+	}
+	
+	public static HashMap<String, Object> argUsuarioDetalle(UserMeli u) {
+		HashMap<String, Object> arg  = new  HashMap<String, Object>();		
+		arg.put("user", u);
+		return arg;
+	}
+	
+	public static HashMap<String, Object> argRol(String btnSuccess, String title, SubRol r) {
+		HashMap<String, Object> arg  = new  HashMap<String, Object>();		
+		arg.put("rol", r);
+		arg.put("title", title);
+		arg.put("btnSuccess", btnSuccess);
+		return arg;
+	}
+	
 }

@@ -61,7 +61,7 @@ public final class ZkUtils {
 	}
 	
 	public static void crearModal(String zul, Map<?, ?> arg) {
-		Window window = (Window) Executions.createComponents (zul ,null, arg);
+		Window window = (Window) Executions.createComponents(zul ,null, arg);
 		window.doModal();
 	}
 	

@@ -32,9 +32,7 @@ public class DeleteQuestionsController extends SelectorComposer<Component> {
 	private static Meli m = new Meli(MeliUtils.APP_ID, MeliUtils.Secret_Key);
 	private FluentStringsMap params = new FluentStringsMap();
 	private Sesion sesion = new Sesion();
-	
-	private String tokenAux = "APP_USR-8051032385985753-092221-2ab142346962e99d03f9a47dda237dc2__H_G__-268910416";
-	
+		
 	public String textDeleteQuestions() {
 		return Message.DeleteQuestion;
 	}

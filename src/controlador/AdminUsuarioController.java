@@ -23,11 +23,6 @@ import utils.ZkUtils;
 
 import dao.Bd;
 
-/*
- * http://developers.mercadolibre.com/es/producto-consulta-usuarios/
- * https://api.mercadolibre.com/sites/MLV/search?nickname=CIACAPPLICATIONS
- * https://api.mercadolibre.com/sites
- * */
 public class AdminUsuarioController extends SelectorComposer<Component> {
 	
 	private static final long serialVersionUID = 1L; 
@@ -62,37 +57,36 @@ public class AdminUsuarioController extends SelectorComposer<Component> {
 			@Override
 			public void onEvent(Event arg) throws Exception {
 				setModelList();
+				ZkUtils.mensaje_short(arg.getName(), 1, listUsuarios);
 			}
 		});
 		
 	}
 
 	@Listen("onClick = #btnNuevo")
-	public void addTag() {
-		ZkUtils.crearModal("../modal/tag.zul", MeliUtils.argTag( "Crear",
-																"Nueva Etiqueta",
-																"", "", "", ""));
+	public void addUsuario() {
+		UserMeli u = new UserMeli();
+		ZkUtils.crearModal("../modal/vendedor.zul", MeliUtils.argUsuario( "Crear",
+																"Nueva Usuario",
+																u));
 	}
 	
 	@Listen("onClick = #btnEditar")
-	public void updateTag() {
+	public void updateUsuario() {
 		if (listUsuarios.getSelectedIndex() == -1) {
-			ZkUtils.mensaje_short(Message.NeedSelectTags, 2, listUsuarios);
+			ZkUtils.mensaje_short(Message.NeedSelectUser, 2, listUsuarios);
 		} else {			
 			UserMeli u = listUsuarios.getSelectedItem().getValue();
-			ZkUtils.crearModal("../modal/tag.zul", MeliUtils.argTag( "Editar",
+			ZkUtils.crearModal("../modal/vendedor.zul", MeliUtils.argUsuario( "Editar",
 																	"Editar Usuario",
-																	"",
-																	"",
-																	"",
-																	""));	
+																	u));	
 		}
 	}
 	
 	@Listen("onClick = #btnEliminar")
-	public void deleteTag() {
+	public void deleteUsuario() {
 		if (listUsuarios.getSelectedIndex() == -1) {
-			ZkUtils.mensaje_short(Message.NeedSelectTags, 2, listUsuarios);
+			ZkUtils.mensaje_short(Message.NeedSelectUser, 2, listUsuarios);
 		} else {			
 			UserMeli u = listUsuarios.getSelectedItem().getValue();
 			
@@ -103,6 +97,18 @@ public class AdminUsuarioController extends SelectorComposer<Component> {
 	}
 	
 	private void setModelList() {
-		listUsuarios.setModel(new ListModelList<UserMeli> (bd.selectVendedores()));
+		listUsuarios.setModel(new ListModelList<UserMeli> (bd.userSelectVendedores()));
 	}
+	
+	@Listen("onClick = #btnDetalle")
+	public void seeMore() {
+		if (listUsuarios.getSelectedIndex() == -1) {
+			ZkUtils.mensaje_short(Message.NeedSelectUser, 2, listUsuarios);
+		} else {
+			UserMeli u = listUsuarios.getSelectedItem().getValue();
+			
+			ZkUtils.crearModal("../modal/vendedorDetalle.zul", MeliUtils.argUsuarioDetalle( u ));
+		}
+	}
+	
 }

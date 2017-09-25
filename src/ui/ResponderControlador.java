@@ -59,9 +59,6 @@ public class ResponderControlador extends SelectorComposer<Component> {
 	private Sesion sesion = new Sesion();
 	private Bd bd = new Bd();
 	
-	private String tokenAux = "APP_USR-8051032385985753-092314-967900ea35260de7be221172aa3ace82__D_F__-268910416";
-	private String idUsuarioAux = "268910416";
-	
 	private void cargarTags() {
 		System.out.println("TAGS");
 		combitos.clear();

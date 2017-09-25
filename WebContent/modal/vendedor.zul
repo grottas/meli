@@ -1,0 +1,39 @@
+<zk xmlns:n="xhtml">
+	<window action="show: slideDown({duration: 300}); hide: slideUp({duration: 100})"
+		border="none" id="win" apply="modal.UsuarioController" style="width: 50%">
+		
+		<n:center>
+			<n:h2>${arg.title}</n:h2>
+			<label id="tipo" value="${arg.btnSuccess}" visible="false"/>
+			<label id="idUser" value="${arg.id}" visible="false"/>
+		</n:center>
+		<separator bar="true" spacing="5px"/>
+		
+		<vbox style="width: 100%">
+			<div style="margin: 5% 15%;">
+				<div class="input-group" style="margin-bottom: 10px;width:100%">
+					<label value="Sitio de ML al que pertenece el usuario" style="margin-right: 10px;"/>
+					<combobox id="comboSites" />
+				</div>
+				<div class="input-group" style="margin-bottom: 10px;">
+		        	<textbox id="txtNombreML" type="text" value="${arg.nombre}" class="form-control input-sm" placeholder="Ingrese su nombre de usuario en MercadoLibre" />
+			        <div class="input-group-btn">
+			        	<n:button id="btnValidarNombreMl" type="button" class="btn btn-sm btn-white">Confirmar</n:button>
+			        </div>
+			 	</div>
+			 	<textbox id="txtIdMeli" value="${arg.idMeli}" type="text" class="form-control input-sm" placeholder="ID ML" readonly="true" style="margin-bottom: 10px;"/>
+		    	<textbox id="txtEmail" value="${arg.email}" type="text" class="form-control input-sm" placeholder="Email" style="margin-bottom: 10px;"/>
+				<label value="La clave de usuario por defecto será el nombre de usuario en MercadoLibre."/>
+			</div>
+			
+			<n:center>
+				<hbox>	
+					<n:button id="closeWin" class="btn btn-white" type="button">Cancelar</n:button>
+					<separator bar="false" spacing="20%"/>
+					<n:button id="btnSuccess" class="btn btn-primary" type="button">${arg.btnSuccess}</n:button>
+				</hbox>	
+			</n:center>
+		</vbox>
+		
+	</window>
+</zk>

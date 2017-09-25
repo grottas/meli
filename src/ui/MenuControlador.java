@@ -24,6 +24,7 @@ public class MenuControlador extends SelectorComposer<Component> {
 	
 	private static final long serialVersionUID = 1L;
 	private @Wire("#metismenu") Ul metismenu;
+	
 	private Li liOld = null;
 	public Sesion sesion = new Sesion();
 		
@@ -39,14 +40,15 @@ public class MenuControlador extends SelectorComposer<Component> {
 			menu.add(new Menu("admin/index.zul", 0, "fa fa-at", "Etiqueta", null));
 			menu.add(new Menu("admin/usuario.zul", 0, "fa fa-users", "Usuario", null));
 			
-//		// Vendedor
+		// Vendedor
 		} else {
 			menu.add(new Menu("", 1, "fa fa-list-ul", "Gestión de Preguntas", Arrays.asList("Preguntas por Gestionar", "Preguntas Gestionadas") ));
 		
 			if (u.getSub_rol() == null) {
-				menu.add(new Menu("", 0, "fa fa-users", "Vendedores", null));
+				menu.add(new Menu("", 1, "fa fa-users", "Vendedores", Arrays.asList("Vendedor", "Rol") ));
 			}			
 		}
+		menu.add(new Menu("modalConfiguracion", 0, "fa fa-cog", "Configurar Cuenta", null));
 		menu.add(new Menu("", 0, "fa fa-sign-out", "Cerrar Sesión", null));
 		createmenu(menu);
 	}
@@ -111,13 +113,29 @@ public class MenuControlador extends SelectorComposer<Component> {
 		if (li.getId().equals("")) {
 			sesion.cerrarSesion();
 		}
+		
+		if (li.getId().equals("modalConfiguracion")) {
+			showModal();
+			return;
+		}
+		
 		ZkUtils.redireccion("/" + li.getId());
 	}
 	
+	private void showModal() {
+		try {
+			ZkUtils.crearModal("modal/configurarCuenta.zul", null);
+		} catch (Exception e) {
+			ZkUtils.crearModal("../modal/configurarCuenta.zul", null);
+		}
+	}
+
 	public String setSecondLevelMenuId(String name) {
 		switch (name) {
 			case "Preguntas por Gestionar": return "inicio.zul";
 			case "Preguntas Gestionadas": return "preguntas_gestionadas.zul";
+			case "Vendedor": return "vendedores.zul";
+			case "Rol": return "roles.zul";
 			default: return "";
 		}
 	}

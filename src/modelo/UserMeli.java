@@ -20,6 +20,9 @@ public class UserMeli {
 		this.rol = rol;
 		this.sub_rol = sub_rol;
 	}
+	public UserMeli() {
+		
+	}
 	public String getId() {
 		return id;
 	}

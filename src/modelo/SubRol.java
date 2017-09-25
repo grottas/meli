@@ -12,6 +12,9 @@ public class SubRol {
 		this.id_meli = id_meli;
 		this.descripcion = descripcion;
 	}
+	public SubRol() {
+		
+	}
 	public String getId() {
 		return id;
 	}

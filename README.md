@@ -91,3 +91,14 @@
   - Administracion de usuarios - Eliminar
   - Modelado en BD
   - Modelo DAO por cada tabla
+#### September 24, 2017
+  - Get Ml Sites
+  - Validacion Vendedor con su cuenta ML
+  - pagination Tags and User
+  - Administracion de usuarios - Crear / Editar / ResetPass
+  - Elimiar vendedor y subvendedores a asociados
+  - Validate IdMeli vs IdML
+  - Administracion de Rol - Crear / Editar / Eliminar rol y subvendedores asociados
+  - Permisos - Subroles
+  - Administracion SubRoles - Crear / Editar / Eliminar subrol y subvendedores asodiados
+  - Master / detalle (Vendedor / SubVendedor)

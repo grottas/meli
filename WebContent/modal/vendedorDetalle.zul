@@ -1,0 +1,71 @@
+<zk xmlns:n="xhtml">
+	<window action="show: slideDown({duration: 300}); hide: slideUp({duration: 100})"
+		border="none" id="win" apply="modal.UsuarioDetalleController" style="width: 50%">
+		
+		<n:center>
+			<n:h2>Detalle de ${arg.user.nombre}</n:h2>
+			<label id="idUser" value="${arg.user.id}" visible="false"/>
+		</n:center>
+		<separator bar="true" spacing="5px"/>
+		
+		<vbox style="width: 100%">
+			<div style="margin: 5% 10%;">
+				
+				<div class="row">
+					<div class="col-xs-12 col-sm-12">
+			        	<textbox id="txtNombreML" type="text" value="${arg.user.nombre}" class="form-control input-sm" readonly="true" style="margin-bottom: 10px;" />
+				 	</div>
+			 	</div>
+			 	<div class="row">
+			 		<div class="col-xs-12 col-sm-4">
+			 			<textbox id="txtIdMeli" value="${arg.user.id_meli}" type="text" class="form-control input-sm" readonly="true" style="margin-bottom: 10px;"/>
+			 		</div>
+			 		<div class="col-xs-12 col-sm-8">
+		    			<textbox id="txtEmail" value="${arg.user.email}" type="text" class="form-control input-sm" readonly="true" style="margin-bottom: 10px;"/>
+			 		</div>
+			 	</div>
+			 	<div class="row" style="margin-bottom: 10px;">
+				<div class="col-xs-12 col-sm-12">
+					<n:button id="resetClave" class="btn btn-info" type="button">Reiniciar Clave</n:button>
+				</div>
+				</div>
+				
+				<listbox id="listUsuarios" mold="paging" pageSize="5"  pagingPosition="top"
+					emptyMessage="No hay sub usuarios para mostrar.">
+					<listhead>
+						<listheader label="ID ML" align="center" sort="auto"/>
+						<listheader label="Nombre" align="center"/>
+						<listheader label="Email" align="center"/>
+						<listheader label="Rol" align="center"/>
+					</listhead>
+					<template name="model">
+						<listitem>
+							
+							<listcell>
+								<label value="${each.id_meli}"/>
+							</listcell>
+							<listcell>
+								<label value="${each.nombre}"/>
+							</listcell>
+							<listcell>
+								<label value="${each.email}"/>
+							</listcell>
+							<listcell>
+								<label value="${each.sub_rol.descripcion}"/>
+							</listcell>
+							
+						</listitem>	
+					</template>
+				</listbox>          
+				
+			</div>         
+			
+			<n:center>
+				<hbox>	
+					<n:button id="closeWin" class="btn btn-white" type="button">Cerrar</n:button>
+				</hbox>	
+			</n:center>
+		</vbox>
+		
+	</window>
+</zk>
