@@ -14,11 +14,6 @@ public class Sesion {
 		sesion.invalidate();
 	}
 	
-	public void test() {
-		sesion.setAttribute("id", "268910416");
-		sesion.setAttribute("accessToken", "APP_USR-8051032385985753-092416-8c0ed7e1d49ffc3611f8c31fc9f02ae8__F_D__-268910416");
-	}
-	
 	public void logIn(UserCurrent usu) {
 		sesion.setAttribute("id", usu.getId());
 		sesion.setAttribute("nickname", usu.getNickname());

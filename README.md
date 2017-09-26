@@ -102,3 +102,4 @@
   - Permisos - Subroles
   - Administracion SubRoles - Crear / Editar / Eliminar subrol y subvendedores asodiados
   - Master / detalle (Vendedor / SubVendedor)
+  - Control de acceso

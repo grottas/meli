@@ -95,12 +95,7 @@ public class ControladorInicio extends SelectorComposer<Component> {
 		super.doAfterCompose(comp);
 		
 		getCodeMeli();		
-		eventQueue();
-		
-		
-//		sesion.test();
-//		prepareToSearchQuestions();		
-		
+		eventQueue();	
 	}
 
 	private void eventQueue() {
@@ -630,8 +625,11 @@ public class ControladorInicio extends SelectorComposer<Component> {
 	
 	private boolean permisos(String p) {
 		UserMeli u = sesion.getUserMeli();
+		System.out.println(u.getRol());
+		System.out.println(u.getRol().getId());
+
 		// Vendedor, tiene total acceso
-		if (u.getRol() == null) {
+		if (u.getRol().getId().equals("2")) {
 			return true;
 			
 			// Verificamos el rol del subVendedor
