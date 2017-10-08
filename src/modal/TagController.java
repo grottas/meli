@@ -15,6 +15,7 @@ import org.zkoss.zul.Window;
 import dao.Bd;
 
 import utils.EventQueuesUtils;
+import utils.Sesion;
 import utils.ZkUtils;
 
 public class TagController extends SelectorComposer<Component> {
@@ -27,6 +28,7 @@ public class TagController extends SelectorComposer<Component> {
 	@Wire private Textbox txtDescripcion;
 	@Wire private Textbox txtTexto;
 	
+	private Sesion sesion = new Sesion();
 	private Bd bd = new Bd();
 	
 	@Listen("onClick = #closeWin")
@@ -52,8 +54,14 @@ public class TagController extends SelectorComposer<Component> {
 			return;
 		}
 		
-		if (tipo.getValue().equals("Crear")) {
-			newTag();
+		if (tipo.getValue().equals("Crear")) {			
+			Tag t = bd.tagSelectByIdMeliAndNombre(sesion.sesion.getAttribute("id").toString(), txtEtiqueta.getValue().toLowerCase());
+			if (t == null) {
+				newTag();				
+			} else {
+				ZkUtils.mensaje_short("Etiqueta duplicada", 2, null);
+				return;
+			}
 		} else {
 			updateTag();
 		}
@@ -78,8 +86,9 @@ public class TagController extends SelectorComposer<Component> {
 	}
 	
 	private Tag getTag() {
-		return new Tag(txtEtiqueta.getValue(), txtDescripcion.getValue(), 
-						txtTexto.getText(), idTag.getValue());
+		return new Tag(txtEtiqueta.getValue().toLowerCase(), txtDescripcion.getValue(), 
+						txtTexto.getText(), idTag.getValue(), 
+						sesion.sesion.getAttribute("id").toString());
 	}
 
 }

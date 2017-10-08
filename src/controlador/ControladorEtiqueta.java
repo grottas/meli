@@ -19,15 +19,17 @@ import plugin.MeliUtils;
 
 import utils.EventQueuesUtils;
 import utils.Message;
+import utils.Sesion;
 import utils.ZkUtils;
 
 import dao.Bd;
 
-public class AdminIndexController extends SelectorComposer<Component> {
+public class ControladorEtiqueta extends SelectorComposer<Component> {
 	
 	private static final long serialVersionUID = 1L; 
 	@Wire private Listbox listTags;
 	
+	private Sesion sesion = new Sesion();
 	private Bd bd = new Bd();
 	
 	@Override
@@ -64,7 +66,7 @@ public class AdminIndexController extends SelectorComposer<Component> {
 
 	@Listen("onClick = #btnNuevo")
 	public void addTag() {
-		ZkUtils.crearModal("../modal/tag.zul", MeliUtils.argTag( "Crear",
+		ZkUtils.crearModal("modal/tag.zul", MeliUtils.argTag( "Crear",
 																"Nueva Etiqueta",
 																"", "", "", ""));
 	}
@@ -75,7 +77,7 @@ public class AdminIndexController extends SelectorComposer<Component> {
 			ZkUtils.mensaje_short(Message.NeedSelectTags, 2, listTags);
 		} else {			
 			Tag t = listTags.getSelectedItem().getValue();
-			ZkUtils.crearModal("../modal/tag.zul", MeliUtils.argTag( "Editar",
+			ZkUtils.crearModal("modal/tag.zul", MeliUtils.argTag( "Editar",
 																	"Editar Etiqueta",
 																	t.getId(),
 																	t.getNombre(),
@@ -91,13 +93,14 @@ public class AdminIndexController extends SelectorComposer<Component> {
 		} else {			
 			Tag t = listTags.getSelectedItem().getValue();
 			
-			ZkUtils.crearModal("../meli/delete.zul", MeliUtils.argDelete( t.getId(),
+			ZkUtils.crearModal("meli/delete.zul", MeliUtils.argDelete( t.getId(),
 																		"Eliminar Etiqueta",
 																		"modal.DeleteTagsController"));			
 		}
 	}
 	
 	private void setModelList() {
-		listTags.setModel(new ListModelList<Tag> (bd.tagSelectAll()));
+		String id = sesion.sesion.getAttribute("id").toString();
+		listTags.setModel(new ListModelList<Tag> (bd.tagSelectAll( id )));
 	}
 }

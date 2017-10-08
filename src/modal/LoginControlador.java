@@ -26,17 +26,10 @@ public class LoginControlador extends SelectorComposer<Component> {
 	@Wire private Window win;
 	@Wire private Textbox txtUsuario;
 	@Wire private Textbox txtClave;
-	@Wire private Button closeWin;
 	@Wire private Button btnIngresar;
 	
 	private Sesion sesion = new Sesion();
 	private Bd bd = new Bd();
-	
-	@Listen("onClick = #closeWin")
-	public void closeWindow() {
-		if (!closeWin.getSclass().contains("disabled"))
-			win.detach();
-	}
 	
 	@Listen("onOK = #txtUsuario")
 	public void okUsuario() {	
@@ -47,16 +40,8 @@ public class LoginControlador extends SelectorComposer<Component> {
 		else
 			txtClave.setFocus(true);
 	}
-
-	@Listen("onOK = #txtUsuario")
-	public void okClave() {
-		if (txtClave.getValue().isEmpty())
-			ZkUtils.campoRequerido(txtClave);
-		else
-			ingresar();
-	}
 	
-	@Listen("onClick = #btnIngresar")
+	@Listen("onClick = #btnIngresar; onOK = #txtClave")
 	public void ingresar() {
 		if (txtUsuario.getValue().isEmpty())
 			ZkUtils.campoRequerido(txtUsuario);
@@ -79,15 +64,15 @@ public class LoginControlador extends SelectorComposer<Component> {
 				UserMeli user = bd.userSelectByEmailAndClave(email, clave);
 				 
 				if (user != null) {
-					sesion.saveUserMeli(user);
-					// Succeess
-					if (user.getRol().getId().equals("1")) {
-						// Admin
-						ZkUtils.redireccion("/admin");
+					if (user.getRol().getId().equals("2")) {
+						ZkUtils.mensaje("Sus credenciales no es de vendedor", 2, null);
 					} else {
+						sesion.saveUserMeli(user);
+						
 						// Vendedores
 						loginWithMl();
 					}
+					
 				} else {
 					ZkUtils.mensaje(Message.LogInFail, 1, null);
 				}
@@ -98,7 +83,6 @@ public class LoginControlador extends SelectorComposer<Component> {
 	private void loginWithMl() {
 		// Bloquear botones
 		btnIngresar.setSclass(btnIngresar.getSclass() + " disabled");
-		closeWin.setSclass(closeWin.getSclass() + " disabled");
 		
 		Meli m = new Meli(MeliUtils.APP_ID, MeliUtils.Secret_Key);
 		

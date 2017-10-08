@@ -15,6 +15,8 @@ import modelo.AnswerRequest;
 import modelo.Plantilla;
 import modelo.Producto;
 import modelo.Question;
+import modelo.Rol;
+import modelo.SubRol;
 import modelo.User;
 import modelo.UserCurrent;
 import modelo.UserMeli;
@@ -144,12 +146,21 @@ public class ControladorInicio extends SelectorComposer<Component> {
 				if (response.getStatusCode() == 200) {
 					UserCurrent usu = ParseJson.me(response.getResponseBody(), m.getAccessToken(),  m.getRefreshToken());
 					
-					if (!usu.getId().equals(sesion.getUserMeli().getId_meli())) {
-						errorId();
-						return;
+					if (sesion.getUserMeli() != null) {
+						if (!usu.getId().equals(sesion.getUserMeli().getId_meli())) {
+							errorId();
+							return;
+						}
 					}
-					
+					// registrar usuario si no esta registrado
 					sesion.logIn(usu);		
+					UserMeli u = bd.userSelectByEmail( usu.getEmail() );
+					if (u == null) {
+						Rol r = new Rol("2", "");
+						SubRol s = new SubRol("0", "", "");
+						u = new UserMeli("", usu.getId(), usu.getNickname(), usu.getEmail(), "", r, s);
+						bd.userInsert(u);
+					}
 					
 					prepareToSearchQuestions();
 				} else {
@@ -217,7 +228,9 @@ public class ControladorInicio extends SelectorComposer<Component> {
 	
 				if (totalQuestions <= MeliUtils.LimitRequest) {
 					questions.addAll( ParseJson.questions(response.getResponseBody()) );
-					searchFrom(0);
+					if (questions.size() > 0) {
+						searchFrom(0);
+					}
 					
 				} else {
 					questions.addAll( ParseJson.questions(response.getResponseBody()) );
@@ -625,17 +638,19 @@ public class ControladorInicio extends SelectorComposer<Component> {
 	
 	private boolean permisos(String p) {
 		UserMeli u = sesion.getUserMeli();
-		System.out.println(u.getRol());
-		System.out.println(u.getRol().getId());
 
 		// Vendedor, tiene total acceso
-		if (u.getRol().getId().equals("2")) {
+		if (u == null) {
 			return true;
 			
 			// Verificamos el rol del subVendedor
 		} else {
 			return bd.permisoRolAccess(u.getSub_rol().getId(), p);
 		}
+	}
+	
+	public boolean visibleTags() {
+		return sesion.getUserMeli() == null;
 	}
 
 }

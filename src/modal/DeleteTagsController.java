@@ -35,7 +35,7 @@ public class DeleteTagsController extends SelectorComposer<Component> {
 		EventQueues.lookup(EventQueuesUtils.DeleteTag, EventQueues.DESKTOP, true)
 	        .publish(new Event ( id ));
 		closeWindow();
-		ZkUtils.mensaje(Message.DeleteQuestionSuceess, 1, null);
+		ZkUtils.mensaje(Message.DeleteTagSuceess, 1, null);
 	}
 
 }

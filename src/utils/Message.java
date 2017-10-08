@@ -17,6 +17,7 @@ public final class Message {
 	public final static String NeedSelectUser = "Seleccione una usuario.";
 	public final static String NeedSelectRol = "Seleccione un rol.";
 	public final static String NeedSelectSubUser = "Seleccione un vendedor.";
+	public final static String DeleteTagSuceess = "Etiqueta eliminada exitosamente.";
 	public final static String DeleteQuestionSuceess = "Pregunta eliminada exitosamente.";
 	public final static String DeleteRolionSuceess = "Rol eliminada exitosamente.";
 	public final static String DeleteUsuarioSuccess = "Usuario eliminada exitosamente.";

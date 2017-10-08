@@ -18,8 +18,10 @@
 			
 				<textbox id="txtNombre" type="text" value="${arg.nombre}" class="form-control input-sm" placeholder="Ingrese su nombre de usuario" style="margin-bottom: 10px;"/>
 		    	<textbox id="txtEmail" value="${arg.email}" type="text" class="form-control input-sm" placeholder="Email" style="margin-bottom: 10px;"/>
+		    	<textbox id="txtClave" type="password" class="form-control input-sm" placeholder="Ingrese la clave" style="margin-bottom: 10px;"/>
+		    	<textbox id="txtReClave" type="password" class="form-control input-sm" placeholder="Confirmar clave" style="margin-bottom: 10px;"/>
+
 				<n:button id="resetClave" class="btn btn-info" type="button" visible="${ arg.btnSuccess eq 'Editar' }">Reiniciar Clave</n:button>
-				<label value="La clave de usuario por defecto será exactamente el nombre de usuario"/>
 				
 			</div>
 			

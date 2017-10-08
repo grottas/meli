@@ -1,6 +1,4 @@
 <?page title="Roles" contentType="text/html;charset=UTF-8"?>
-<?init class="access.UserLogIn"?>
-<?init class="access.OnlyUser"?>
 
 <?link rel="stylesheet" type="text/css" href="/assets/bootstrap-3.3.7/css/bootstrap.min.css" ?>
 <?link rel="stylesheet" type="text/css" href="/assets/font-awesome-4.7.0/css/font-awesome.min.css" ?>
@@ -20,6 +18,15 @@
 <zk xmlns:n="xhtml">
 	<div id="wrapper" apply="controlador.ControladorRoles">
 	<include src="/ui/menu.zul"/>
+	
+	<style>
+		.z-notification-icon.z-icon-info-circle {
+			top: 15px;
+		}
+		.z-notification-content {
+			min-height: auto;
+		}
+	</style>
 		
         <n:div id="page-wrapper" class="gray-bg">
         	<div class="row border-bottom"></div>

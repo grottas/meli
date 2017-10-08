@@ -33,6 +33,8 @@ public class SubVendedorController extends SelectorComposer<Component> {
 	@Wire private Label id;
 	@Wire private Textbox txtNombre;
 	@Wire private Textbox txtEmail;
+	@Wire private Textbox txtClave;
+	@Wire private Textbox txtReClave;
 	@Wire private Combobox comboRol;
 	@Wire private Button resetClave;
 	
@@ -88,25 +90,73 @@ public class SubVendedorController extends SelectorComposer<Component> {
 	}
 
 	private void continueToSuccess() {
+		UserMeli u = bd.userSelectByEmail(txtEmail.getValue());
 		String message = "";
+		
 		if (tipo.getValue().equals("Crear")) {
-			message = newUsuario();
+			
+			if (u == null) {
+				if (txtClave.getValue().isEmpty()) {
+					ZkUtils.campoRequerido(txtClave);
+					return;
+				} else if (txtReClave.getValue().isEmpty()) {
+					ZkUtils.campoRequerido(txtReClave);
+					return;
+				} else if (!txtClave.getValue().equals( txtReClave.getValue() )) {
+					ZkUtils.mensaje_short("Las claves no coinciden", 2, txtClave);
+					return;
+				} else {
+					message = newUsuario();
+				}
+			} else {
+				ZkUtils.mensaje_short("Email en uso", 2, null);
+				return;
+			}
 		} else {
-			message = updateUsuario();
+			
+			if (u != null) {				
+				if (!u.getId().equals(id.getValue())) {
+					ZkUtils.mensaje_short("Email en uso", 2, txtEmail);
+					return;
+				}
+			}
+			
+			if (txtClave.getValue().isEmpty() && !txtReClave.getValue().isEmpty()) {
+				ZkUtils.campoRequerido(txtClave);
+				return;
+			} else if (!txtClave.getValue().isEmpty() && txtReClave.getValue().isEmpty()) {
+				ZkUtils.campoRequerido(txtReClave);
+				return;
+			} else if (txtClave.getValue().isEmpty() && txtReClave.getValue().isEmpty()) {
+				message = updateUsuario(true);
+
+			} else if (!txtClave.getValue().isEmpty() && !txtReClave.getValue().isEmpty()) {
+				if (!txtClave.getValue().equals( txtReClave.getValue() )) {
+					ZkUtils.mensaje_short("Las claves no coinciden", 2, txtClave);
+					return;
+				} else {
+					message = updateUsuario(false);	
+				}
+			}					
 		}
 		EventQueues.lookup(EventQueuesUtils.SubUserChange, EventQueues.DESKTOP, true)
         	.publish(new Event ( message ));
 		win.detach();
 	}
 	
-	private String updateUsuario() {
-		bd.userUpdate( getUsuario() );
+	private String updateUsuario(boolean changePass) {
+		UserMeli user = getUsuario();
+		if (changePass) {
+			UserMeli u = bd.userSelectById(id.getValue());
+			user.setClave( u.getClave() );
+		}
+		bd.userUpdate( user );
 		return "Usuario actualizada";
 	}
 
 	private String newUsuario() {
 		bd.userInsert( getUsuario() );
-		return "Usuario creado";
+		return "Usuario creado";	
 	}
 	
 	@Listen("onClick = #resetClave")
@@ -125,7 +175,7 @@ public class SubVendedorController extends SelectorComposer<Component> {
 
 		return new UserMeli(id.getValue(), id_meli,
 					txtNombre.getValue(), txtEmail.getValue(), 
-					ZkUtils.md5( txtNombre.getValue() ), r, s);
+					ZkUtils.md5( txtClave.getValue() ), r, s);
 	}
 	
 }

@@ -154,6 +154,28 @@ public class UserMeliDAO extends ClassConexionDAO {
 		return u;
     }
 	
+	public UserMeli selectByEmail(String email) {
+		UserMeli u = null;
+		String tiraSQL = "SELECT * FROM usuario WHERE email='"+ email +"';";
+		ResultSet resultSet = Conexion.consultar(tiraSQL);		
+
+		try {
+			while (resultSet.next()) {
+				String id = resultSet.getString("id");
+				String id_meli = resultSet.getString("id_meli").trim();
+				String nombre = resultSet.getString("nombre").trim();
+				String clave = resultSet.getString("clave").trim();
+				Rol rol = rolDAO.selectById( resultSet.getString("rol") );
+				SubRol sub_rol = subRolDAO.selectById( resultSet.getString("sub_rol") );
+				
+				u = new UserMeli(id, id_meli, nombre, email, clave, rol, sub_rol);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return u;
+    }
+	
 	public boolean codeMeliIsUsed(String id_meli) {
 		return selectByIdMeli(id_meli) != null;
 	}
@@ -169,6 +191,14 @@ public class UserMeliDAO extends ClassConexionDAO {
 		Sql = Sql.concat("clave='" + u.getClave() + "',");
 		Sql = Sql.concat("rol=" + rol + ",");
 		Sql = Sql.concat("sub_rol=" + subRol + " ");
+		Sql = Sql.concat("WHERE id="+ u.getId() +";");
+
+		Conexion.ejecutar(Sql);
+	 }
+	
+	public void updatePassword(UserMeli u) {
+		String Sql = "UPDATE usuario ";
+		Sql = Sql.concat("SET clave='" + u.getClave() + "' ");
 		Sql = Sql.concat("WHERE id="+ u.getId() +";");
 
 		Conexion.ejecutar(Sql);

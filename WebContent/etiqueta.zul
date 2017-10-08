@@ -1,6 +1,4 @@
 <?page title="Etiquetas" contentType="text/html;charset=UTF-8"?>
-<?init class="access.UserLogIn"?>
-<?init class="access.OnlyAdmin"?>
 
 <?link rel="stylesheet" type="text/css" href="/assets/bootstrap-3.3.7/css/bootstrap.min.css" ?>
 <?link rel="stylesheet" type="text/css" href="/assets/font-awesome-4.7.0/css/font-awesome.min.css" ?>
@@ -18,8 +16,18 @@
 <?script type="text/javascript" src="/assets/inspinia-2.7.1/js/pace.min.js"?>
 
 <zk xmlns:n="xhtml">
-	<div id="wrapper" apply="controlador.AdminIndexController">
-	<include src="../ui/menu.zul"/>
+	<div id="wrapper" apply="controlador.ControladorEtiqueta">
+	
+	<style>
+		.z-notification-icon.z-icon-info-circle {
+			top: 15px;
+		}
+		.z-notification-content {
+			min-height: auto;
+		}
+	</style>
+	
+	<include src="ui/menu.zul"/>
 		
 		
         <n:div id="page-wrapper" class="gray-bg">

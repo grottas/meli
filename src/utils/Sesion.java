@@ -21,6 +21,7 @@ public class Sesion {
 		sesion.setAttribute("last_name", usu.getLast_name());
 		sesion.setAttribute("accessToken", usu.getAccessToken());
 		sesion.setAttribute("refreshToken", usu.getRefreshToken());
+		sesion.setAttribute("email", usu.getEmail());
 	}
 	
 	public UserCurrent getCurrentUser() {
@@ -29,7 +30,8 @@ public class Sesion {
 											sesion.getAttribute("first_name").toString(),
 											sesion.getAttribute("last_name").toString(),
 											sesion.getAttribute("accessToken").toString(),
-											sesion.getAttribute("refreshToken").toString());
+											sesion.getAttribute("refreshToken").toString(),
+											sesion.getAttribute("email").toString());
     	return usu;
 	}
 	

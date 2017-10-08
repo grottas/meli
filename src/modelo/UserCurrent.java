@@ -8,9 +8,11 @@ public class UserCurrent {
 	private String last_name;
 	private String accessToken;
 	private String refreshToken;
+	private String email;
 	
 	public UserCurrent(String id, String nickname, String first_name,
-			String last_name, String accessToken, String refreshToken) {
+			String last_name, String accessToken, String refreshToken,
+			String email) {
 		super();
 		this.id = id;
 		this.nickname = nickname;
@@ -18,6 +20,7 @@ public class UserCurrent {
 		this.last_name = last_name;
 		this.accessToken = accessToken;
 		this.refreshToken = refreshToken;
+		this.email = email;
 	}
 	
 	public String getId() {
@@ -55,6 +58,12 @@ public class UserCurrent {
 	}
 	public void setRefreshToken(String refreshToken) {
 		this.refreshToken = refreshToken;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	
 }

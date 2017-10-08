@@ -71,6 +71,10 @@ public class Bd {
 		return userMeliDAO.selectById(id);
 	}
 	
+	public UserMeli userSelectByEmail(String email) {
+		return userMeliDAO.selectByEmail(email);
+	}
+	
 	public UserMeli userSelectByIdMeli(String id_meli) {
 		return userMeliDAO.selectByIdMeli(id_meli);
 	}
@@ -83,6 +87,10 @@ public class Bd {
 		userMeliDAO.update(u);
 	}
 	
+	public void userUpdatePassword(UserMeli u) {
+		userMeliDAO.updatePassword(u);
+	}
+	
 	public void userInsert(UserMeli u) {
 		userMeliDAO.insert(u);
 	}
@@ -91,12 +99,16 @@ public class Bd {
 		userMeliDAO.delete(u);
 	}
 	
-	public List<Tag> tagSelectAll() {
-		return tagDAO.selectAll();
+	public List<Tag> tagSelectAll(String id_meli) {
+		return tagDAO.selectAll(id_meli);
 	}
 	
 	public Tag tagSelectById(String id) {
 		return tagDAO.selectById(id);
+	}
+	
+	public Tag tagSelectByIdMeliAndNombre(String id_meli, String nombre) {
+		return tagDAO.selectByIdMeliAndNombre(id_meli, nombre);
 	}
 	
 	public void tagUpdate(Tag t) {

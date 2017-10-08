@@ -1,6 +1,4 @@
 <?page title="Vendedores" contentType="text/html;charset=UTF-8"?>
-<?init class="access.UserLogIn"?>
-<?init class="access.OnlyUser"?>
 
 <?link rel="stylesheet" type="text/css" href="/assets/bootstrap-3.3.7/css/bootstrap.min.css" ?>
 <?link rel="stylesheet" type="text/css" href="/assets/font-awesome-4.7.0/css/font-awesome.min.css" ?>
@@ -21,12 +19,21 @@
 	<div id="wrapper" apply="controlador.ControladorVendores">
 	<include src="/ui/menu.zul"/>
 		
+		<style>
+			.z-notification-icon.z-icon-info-circle {
+				top: 15px;
+			}
+			.z-notification-content {
+				min-height: auto;
+			}
+		</style>
 		
         <n:div id="page-wrapper" class="gray-bg">
         	<div class="row border-bottom"></div>
         	<div class="row wrapper border-bottom white-bg page-heading">
         		<div class="col-lg-10 col-sm-9">
         			<n:h2>Administración de Vendedores</n:h2>
+        			<label value="* Los vendedores accederan al sitio usando la extensión /login.zul" style="font-weight: 600;color: red;"/>
         		</div>
         	</div>
         	<div class="wrapper wrapper-content">

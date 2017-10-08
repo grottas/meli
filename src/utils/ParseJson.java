@@ -118,7 +118,8 @@ public final class ParseJson {
 								buscarJson(obj, "first_name"),
 								buscarJson(obj, "last_name"),
 								accessToken,
-								refreshToken);
+								refreshToken,
+								buscarJson(obj, "email"));
 	}
 
 	public static JsonElement stringToJsonElement(String cadena) {

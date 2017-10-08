@@ -28,8 +28,13 @@ public class ConfigurarCuentaController extends SelectorComposer<Component> {
 	private Bd bd = new Bd();
 	
 	@Listen("onCreate =#win")
-	public void create() {
+	public void create() {		
 		UserMeli u = sesion.getUserMeli();
+		if (u == null) {
+			u = bd.userSelectByEmail(sesion.sesion.getAttribute("email").toString());
+			txtEmail.setDisabled(true);
+		}
+		
 		txtEmail.setValue( u.getEmail() );
 	}
 	
@@ -60,8 +65,29 @@ public class ConfigurarCuentaController extends SelectorComposer<Component> {
 	}
 
 	private void continueSuccess(boolean cambioClave) {
-		UserMeli u = sesion.getUserMeli();
-		u.setEmail( txtEmail.getValue() );
+		UserMeli currentUser = sesion.getUserMeli();
+		UserMeli userAux = bd.userSelectByEmail(txtEmail.getValue().trim());
+		UserMeli u = bd.userSelectByEmail(sesion.sesion.getAttribute("email").toString());
+
+		if (userAux == null) {
+			u.setEmail( txtEmail.getValue() );
+		} else {
+			String id = u.getId();
+			if (currentUser != null) {
+				id = currentUser.getId();
+				u = currentUser;
+			} 
+			System.out.println("IDS: " + userAux.getId() + " vs " + id);
+
+			if (userAux.getId().equals( id )) {
+				// Is the same user
+				u.setEmail( txtEmail.getValue() );				
+			} else {
+				ZkUtils.mensaje_short("Email en uso", 2, txtEmail);
+				return;
+			}
+			
+		}
 		
 		if (cambioClave)
 			u.setClave( ZkUtils.md5( txtClave.getValue() ) );

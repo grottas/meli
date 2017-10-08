@@ -1,4 +1,4 @@
-<?page title="Index.zul"?>
+<?page title="Login.zul"?>
 <?page automaticTimeout="false"?>
 
 <!-- INSPINA http://webapplayers.com/inspinia_admin-v2.7/index.html -->
@@ -14,7 +14,17 @@
 <?script type="text/javascript" src="/assets/bootstrap-3.3.7/js/bootstrap.min.js"?>
 
 <zk xmlns:n="xhtml">
-	<div apply="controlador.ControladorIndex" style="height: 100%;">
+	
+	<style>
+		.z-notification-icon.z-icon-info-circle {
+			top: 15px;
+		}
+		.z-notification-content {
+			min-height: auto;
+		}
+	</style>
+
+	<div apply="modal.LoginControlador" style="height: 100%;">
 		<n:div class="gray-bg" style="height: 100%;">
 		
 		    <n:div class="middle-box text-center loginscreen animated fadeInDown">
@@ -25,11 +35,13 @@
 		            </n:h1>
 		            <n:div class="widget-head-color-box lazur-bg p-lg text-center">
 	                	<n:div class="m-b-md">
-	                    	<image src="imagen/mercadolibre.png" style="width: 90%;"/>
+							<textbox id="txtUsuario" type="text" class="form-control input-sm" placeholder="Ingrese su email" style="margin-bottom: 10px;color: gray;"/>
+			       	
+		       				<textbox id="txtClave" type="password" class="form-control input-sm" placeholder="Ingrese su clave" style="color: gray;"/>   
 	                    </n:div>
 					</n:div>
 					<n:div class="widget-text-box">
-	                	<n:button id="meli" type="button" class="btn btn-w-m btn-info btn-block" style="font-weight: 600;">Iniciar</n:button>   
+						<n:button id="btnIngresar" class="btn btn-w-m btn-info btn-block" type="button" style="font-weight: 600;">Ingresar</n:button>
 	                </n:div>
 		            
 		        </n:div>

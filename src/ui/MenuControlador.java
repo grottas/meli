@@ -34,21 +34,16 @@ public class MenuControlador extends SelectorComposer<Component> {
 	
 		UserMeli u = sesion.getUserMeli();		
 		List<Menu> menu = new ArrayList<Menu>();
-		
-		// Admin
-		if (u.getRol().getId().equals("1")) {
-			menu.add(new Menu("admin/index.zul", 0, "fa fa-at", "Etiqueta", null));
-			menu.add(new Menu("admin/usuario.zul", 0, "fa fa-users", "Usuario", null));
-			
+
+		menu.add(new Menu("", 1, "fa fa-list-ul", "Gestión de Preguntas", Arrays.asList("Preguntas por Gestionar", "Preguntas Gestionadas") ));
 		// Vendedor
-		} else {
-			menu.add(new Menu("", 1, "fa fa-list-ul", "Gestión de Preguntas", Arrays.asList("Preguntas por Gestionar", "Preguntas Gestionadas") ));
-		
-			if (u.getSub_rol() == null) {
-				menu.add(new Menu("", 1, "fa fa-users", "Vendedores", Arrays.asList("Vendedor", "Rol") ));
-			}			
+		if (u == null) {
+			menu.add(new Menu("etiqueta.zul", 0, "fa fa-at", "Etiqueta", null));
+			//menu.add(new Menu("admin/usuario.zul", 0, "fa fa-users", "Usuario", null));
+			menu.add(new Menu("", 1, "fa fa-users", "Vendedores", Arrays.asList("Vendedor", "Rol") ));
 		}
-		menu.add(new Menu("modalConfiguracion", 0, "fa fa-cog", "Configurar Cuenta", null));
+		
+		menu.add(new Menu("modalConfiguracion", 0, "fa fa-cog", "Configurar Cuenta", null));		
 		menu.add(new Menu("", 0, "fa fa-sign-out", "Cerrar Sesión", null));
 		createmenu(menu);
 	}
@@ -125,9 +120,7 @@ public class MenuControlador extends SelectorComposer<Component> {
 	private void showModal() {
 		try {
 			ZkUtils.crearModal("modal/configurarCuenta.zul", null);
-		} catch (Exception e) {
-			ZkUtils.crearModal("../modal/configurarCuenta.zul", null);
-		}
+		} catch (Exception e) {}
 	}
 
 	public String setSecondLevelMenuId(String name) {

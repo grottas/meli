@@ -63,7 +63,8 @@ public class ResponderControlador extends SelectorComposer<Component> {
 		System.out.println("TAGS");
 		combitos.clear();
 		ZkUtils.removerTodo(comboRespuesta);
-		for (Tag tag : bd.tagSelectAll()) {
+		String id = sesion.sesion.getAttribute("id").toString();
+		for (Tag tag : bd.tagSelectAll( id )) {
 			Comboitem combito = new Comboitem( tag.getNombre() + " " + tag.getDescripcion() );
 			combito.setValue( tag.getTexto() );
 			comboRespuesta.appendChild(combito);
